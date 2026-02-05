@@ -1,0 +1,8 @@
+{
+  "title": "Installation",
+  "icon": "Rocket",
+  "pages": [
+    "docker",
+    "build-from-source"
+  ]
+}

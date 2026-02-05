@@ -1,0 +1,103 @@
+---
+title: SPILL.CLEANUP
+description: "Manually scan and remove expired keys from disk storage."
+synopsis: "Performs a full scan of on-disk storage (RocksDB) to remove all expired keys."
+since: ""
+dicedb_since: "1.0.0"
+acl_categories:
+  - "@keyspace"
+  - "@write"
+  - "@slow"
+  - "@dangerous"
+---
+
+## Syntax
+
+```
+SPILL.CLEANUP
+```
+
+## Parameters
+
+This command takes no parameters.
+
+## Return Value
+
+The return value is an array containing:
+
+- `num_keys_scanned` - Number of keys scanned in on disk storage (RocksDB)
+- `num_keys_cleaned` - Number of expired keys cleaned (deleted)
+
+## Behaviour
+
+When `SPILL.CLEANUP` is called, DiceDB performs a manual scan of the
+entire on-disk storage (RocksDB database) and removes all expired keys.
+
+> Warning: This is a blocking operation that runs on the main
+> DiceDB thread and may stall other commands while executing. Use with
+> caution in production environments.
+
+The Spill module handles expired key cleanup through multiple mechanisms:
+
+1. Cleans expired keys during restore attempts (returning `ERR Key has expired`)
+2. Runs periodic background cleanup every `cleanup-interval` seconds (default: 300)
+3. This manual `SPILL.CLEANUP` command for immediate cleanup
+
+Use this command only when you need to immediately reclaim disk space from expired keys or when the automatic cleanup interval is not sufficient.
+
+Key behaviors:
+
+- This is a blocking operation - it runs on the main thread and may impact performance
+- Scans the entire RocksDB database sequentially
+- Performance depends on the number of keys in RocksDB
+- Removed keys increment the `total_keys_cleaned` counter in INFO output
+- In most cases, rely on the automatic periodic cleanup instead of using this command
+
+## Examples
+
+Cleanup expired keys:
+
+```bash
+127.0.0.1:7379> SET temp1 "value" EX 1
+OK
+127.0.0.1:7379> SET temp2 "value" EX 1
+OK
+127.0.0.1:7379> EVICT temp1 temp2
+OK
+(wait for keys to expire...)
+127.0.0.1:7379> SPILL.CLEANUP
+1) "num_keys_scanned"
+2) (integer) 1523
+3) "num_keys_cleaned"
+4) (integer) 2
+```
+
+Verify cleanup with INFO:
+
+```bash
+127.0.0.1:7379> INFO spill
+# stats
+spill_num_keys_stored:1521
+spill_total_keys_written:2347
+spill_total_keys_restored:847
+spill_total_keys_cleaned:25
+spill_last_num_keys_cleaned:2
+spill_last_cleanup_at:1707512345
+spill_total_bytes_written:45678901
+spill_total_bytes_read:23456789
+
+# config
+spill_path:/var/lib/dicedb/spill
+spill_max_memory_bytes:268435456
+spill_cleanup_interval_seconds:300
+```
+
+## Notes
+
+- This command is specific to DiceDB and is not available in Valkey or Redis.
+- The `SPILL.CLEANUP` command is part of the Spill module ([dicedb-spill](https://github.com/dicedb/dicedb-spill)) for tiered storage support.
+- The command returns an array (displayed as alternating key-value pairs in CLI)
+- Use this command sparingly as it's a blocking operation that can impact performance
+- Configure the `cleanup-interval` parameter (default: 300 seconds) to adjust automatic cleanup frequency
+- Set `cleanup-interval` to 0 to disable automatic cleanup if you prefer manual control
+- See the [Multi Tiering](/docs/tiering) documentation for more details on the Spill module and configuration options.

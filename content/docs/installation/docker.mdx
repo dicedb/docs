@@ -1,0 +1,94 @@
+---
+title: Docker
+description: Get started with DiceDB using Docker
+icon: Container
+---
+
+The quickest and easiest way to start using DiceDB is with the official Docker image. It comes with everything pre-configured, so you can get up and running in seconds without worrying about setup details.
+
+## Quick Start
+
+Run DiceDB with a single command:
+
+```bash
+docker run \
+  --name dicedb-1 -p 6379:6379 -v $(pwd)/data:/data/ \
+  dicedb:latest
+```
+
+This command starts a DiceDB container with the `spill` module already enabled. By default, the spill module uses RocksDB and is configured with a maximum memory limit of 250MB.
+
+### What This Does
+
+- Creates a container named `dicedb-1`
+- Maps port `6379` from the container to your host
+- Mounts a local `data` directory for persistent storage
+- Runs the latest DiceDB image with default configuration
+
+## Custom Configuration
+
+If you prefer not to use the defaults and want to explicitly [configure DiceDB](/docs/conf), you can run DiceDB with explicit configuration:
+
+```bash
+docker run \
+  --name dicedb-1 -p 6379:6379 -v $(pwd)/data:/data/ \
+  dicedb:latest \
+  dicedb-server \
+  --port 6379 \
+  --maxmemory 500mb \
+  --loadmodule /usr/local/lib/lib-spill.so path /data/spill/ max-memory 262144000
+```
+
+This configuration sets:
+
+- DiceDB max memory limit to 500MB
+- Spill memory limit to 250MB (262144000 bytes)
+
+## Connecting to DiceDB
+
+Once your container is running, you can connect to it using the DiceDB CLI:
+
+```bash
+# Using docker exec
+docker exec -it dicedb-1 dicedb-cli
+
+# Or using a local DiceDB CLI
+dicedb-cli -h localhost -p 6379
+```
+
+## Managing the Container
+
+### Stop the Container
+
+```bash
+docker stop dicedb-1
+```
+
+### Start the Container
+
+```bash
+docker start dicedb-1
+```
+
+### View Logs
+
+```bash
+docker logs dicedb-1
+
+# Follow logs in real-time
+docker logs -f dicedb-1
+```
+
+### Remove the Container
+
+```bash
+docker rm dicedb-1
+```
+
+## Data Persistence
+
+The `data` directory mounted in the container ensures that your data persists across container restarts. Make sure to:
+
+- Keep the volume mount path consistent
+- Back up the `data` directory regularly
+- Ensure proper permissions on the host directory

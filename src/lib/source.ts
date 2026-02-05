@@ -1,4 +1,4 @@
-import { docs } from 'fumadocs-mdx:collections/server';
+import { docs, blogPosts, commands, versions } from 'fumadocs-mdx:collections/server';
 import { type InferPageType, loader } from 'fumadocs-core/source';
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
 
@@ -7,6 +7,23 @@ export const source = loader({
   baseUrl: '/docs',
   source: docs.toFumadocsSource(),
   plugins: [lucideIconsPlugin()],
+});
+
+export const blog = loader({
+  baseUrl: '/blog',
+  source: blogPosts.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+});
+
+export const commandsSource = loader({
+  baseUrl: '/commands',
+  source: commands.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+});
+
+export const versionsSource = loader({
+  baseUrl: '/versions',
+  source: versions.toFumadocsSource(),
 });
 
 export function getPageImage(page: InferPageType<typeof source>) {

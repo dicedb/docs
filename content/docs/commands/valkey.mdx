@@ -1,0 +1,407 @@
+---
+title: Inherited from Valkey
+description: Complete list of commands supported in DiceDB that are inherited from Valkey.
+---
+
+| Command | Doc | Synopsis | Min DiceDB | Min Valkey |
+| ------- | ---- | -------- | ------------------ | -------------------------- |
+| ACL | [doc](https://valkey.io/commands/acl) | A container for Access List Control commands. | 1.0.0 | 6.0.0 |
+| ACL CAT | [doc](https://valkey.io/commands/acl-cat) | Lists the ACL categories, or the commands inside a category. | 1.0.0 | 6.0.0 |
+| ACL DELUSER | [doc](https://valkey.io/commands/acl-deluser) | Deletes ACL users, and terminates their connections. | 1.0.0 | 6.0.0 |
+| ACL DRYRUN | [doc](https://valkey.io/commands/acl-dryrun) | Simulates the execution of a command by a user, without executing the command. | 1.0.0 | 7.0.0 |
+| ACL GENPASS | [doc](https://valkey.io/commands/acl-genpass) | Generates a pseudorandom, secure password that can be used to identify ACL users. | 1.0.0 | 6.0.0 |
+| ACL GETUSER | [doc](https://valkey.io/commands/acl-getuser) | Lists the ACL rules of a user. | 1.0.0 | 6.0.0 |
+| ACL HELP | [doc](https://valkey.io/commands/acl-help) | Returns helpful text about the different subcommands. | 1.0.0 | 6.0.0 |
+| ACL LIST | [doc](https://valkey.io/commands/acl-list) | Dumps the effective rules in ACL file format. | 1.0.0 | 6.0.0 |
+| ACL LOAD | [doc](https://valkey.io/commands/acl-load) | Reloads the rules from the configured ACL file. | 1.0.0 | 6.0.0 |
+| ACL LOG | [doc](https://valkey.io/commands/acl-log) | Lists recent security events generated due to ACL rules. | 1.0.0 | 6.0.0 |
+| ACL SAVE | [doc](https://valkey.io/commands/acl-save) | Saves the effective ACL rules in the configured ACL file. | 1.0.0 | 6.0.0 |
+| ACL SETUSER | [doc](https://valkey.io/commands/acl-setuser) | Creates and modifies an ACL user and its rules. | 1.0.0 | 6.0.0 |
+| ACL USERS | [doc](https://valkey.io/commands/acl-users) | Lists all ACL users. | 1.0.0 | 6.0.0 |
+| ACL WHOAMI | [doc](https://valkey.io/commands/acl-whoami) | Returns the authenticated username of the current connection. | 1.0.0 | 6.0.0 |
+| APPEND | [doc](https://valkey.io/commands/append) | Appends a string to the value of a key. Creates the key if it doesn't exist. | 1.0.0 | 2.0.0 |
+| ASKING | [doc](https://valkey.io/commands/asking) | Signals that a cluster client is following an -ASK redirect. | 1.0.0 | 3.0.0 |
+| AUTH | [doc](https://valkey.io/commands/auth) | Authenticates the connection. | 1.0.0 | 1.0.0 |
+| BGREWRITEAOF | [doc](https://valkey.io/commands/bgrewriteaof) | Asynchronously rewrites the append-only file to disk. | 1.0.0 | 1.0.0 |
+| BGSAVE | [doc](https://valkey.io/commands/bgsave) | Asynchronously saves the database(s) to disk. | 1.0.0 | 1.0.0 |
+| BITCOUNT | [doc](https://valkey.io/commands/bitcount) | Counts the number of set bits (population counting) in a string. | 1.0.0 | 2.6.0 |
+| BITFIELD | [doc](https://valkey.io/commands/bitfield) | Performs arbitrary bitfield integer operations on strings. | 1.0.0 | 3.2.0 |
+| BITFIELD_RO | [doc](https://valkey.io/commands/bitfield_ro) | Performs arbitrary read-only bitfield integer operations on strings. | 1.0.0 | 6.0.0 |
+| BITOP | [doc](https://valkey.io/commands/bitop) | Performs bitwise operations on multiple strings, and stores the result. | 1.0.0 | 2.6.0 |
+| BITPOS | [doc](https://valkey.io/commands/bitpos) | Finds the first set (1) or clear (0) bit in a string. | 1.0.0 | 2.8.7 |
+| BLMOVE | [doc](https://valkey.io/commands/blmove) | Pops an element from a list, pushes it to another list and returns it. Blocks until an element is available otherwise. Deletes the list if the last element was moved. | 1.0.0 | 6.2.0 |
+| BLMPOP | [doc](https://valkey.io/commands/blmpop) | Pops the first element from one of multiple lists. Blocks until an element is available otherwise. Deletes the list if the last element was popped. | 1.0.0 | 7.0.0 |
+| BLPOP | [doc](https://valkey.io/commands/blpop) | Removes and returns the first element in a list. Blocks until an element is available otherwise. Deletes the list if the last element was popped. | 1.0.0 | 2.0.0 |
+| BRPOP | [doc](https://valkey.io/commands/brpop) | Removes and returns the last element in a list. Blocks until an element is available otherwise. Deletes the list if the last element was popped. | 1.0.0 | 2.0.0 |
+| BRPOPLPUSH | [doc](https://valkey.io/commands/brpoplpush) | Pops an element from a list, pushes it to another list and returns it. Block until an element is available otherwise. Deletes the list if the last element was popped. | 1.0.0 | 2.2.0 |
+| BZMPOP | [doc](https://valkey.io/commands/bzmpop) | Removes and returns a member by score from one or more sorted sets. Blocks until a member is available otherwise. Deletes the sorted set if the last element was popped. | 1.0.0 | 7.0.0 |
+| BZPOPMAX | [doc](https://valkey.io/commands/bzpopmax) | Removes and returns the member with the highest score from one or more sorted sets. Blocks until a member available otherwise.  Deletes the sorted set if the last element was popped. | 1.0.0 | 5.0.0 |
+| BZPOPMIN | [doc](https://valkey.io/commands/bzpopmin) | Removes and returns the member with the lowest score from one or more sorted sets. Blocks until a member is available otherwise. Deletes the sorted set if the last element was popped. | 1.0.0 | 5.0.0 |
+| CLIENT | [doc](https://valkey.io/commands/client) | A container for client connection commands. | 1.0.0 | 2.4.0 |
+| CLIENT CACHING | [doc](https://valkey.io/commands/client-caching) | Instructs the server whether to track the keys in the next request. | 1.0.0 | 6.0.0 |
+| CLIENT CAPA | [doc](https://valkey.io/commands/client-capa) | A client claims its capability. | 1.0.0 | 8.0.0 |
+| CLIENT GETNAME | [doc](https://valkey.io/commands/client-getname) | Returns the name of the connection. | 1.0.0 | 2.6.9 |
+| CLIENT GETREDIR | [doc](https://valkey.io/commands/client-getredir) | Returns the client ID to which the connection's tracking notifications are redirected. | 1.0.0 | 6.0.0 |
+| CLIENT HELP | [doc](https://valkey.io/commands/client-help) | Returns helpful text about the different subcommands. | 1.0.0 | 5.0.0 |
+| CLIENT ID | [doc](https://valkey.io/commands/client-id) | Returns the unique client ID of the connection. | 1.0.0 | 5.0.0 |
+| CLIENT INFO | [doc](https://valkey.io/commands/client-info) | Returns information about the connection. | 1.0.0 | 6.2.0 |
+| CLIENT KILL | [doc](https://valkey.io/commands/client-kill) | Terminates open connections. | 1.0.0 | 2.4.0 |
+| CLIENT LIST | [doc](https://valkey.io/commands/client-list) | Lists open connections. | 1.0.0 | 2.4.0 |
+| CLIENT NO EVICT | [doc](https://valkey.io/commands/client-no-evict) | Sets the client eviction mode of the connection. | 1.0.0 | 7.0.0 |
+| CLIENT NO TOUCH | [doc](https://valkey.io/commands/client-no-touch) | Controls whether commands sent by the client affect the LRU/LFU of accessed keys. | 1.0.0 | 7.2.0 |
+| CLIENT PAUSE | [doc](https://valkey.io/commands/client-pause) | Suspends commands processing. | 1.0.0 | 3.0.0 |
+| CLIENT REPLY | [doc](https://valkey.io/commands/client-reply) | Instructs the server whether to reply to commands. | 1.0.0 | 3.2.0 |
+| CLIENT SETINFO | [doc](https://valkey.io/commands/client-setinfo) | Sets information specific to the client or connection. | 1.0.0 | 7.2.0 |
+| CLIENT SETNAME | [doc](https://valkey.io/commands/client-setname) | Sets the connection name. | 1.0.0 | 2.6.9 |
+| CLIENT TRACKING | [doc](https://valkey.io/commands/client-tracking) | Controls server-assisted client-side caching for the connection. | 1.0.0 | 6.0.0 |
+| CLIENT TRACKINGINFO | [doc](https://valkey.io/commands/client-trackinginfo) | Returns information about server-assisted client-side caching for the connection. | 1.0.0 | 6.2.0 |
+| CLIENT UNBLOCK | [doc](https://valkey.io/commands/client-unblock) | Unblocks a client blocked by a blocking command from a different connection. | 1.0.0 | 5.0.0 |
+| CLIENT UNPAUSE | [doc](https://valkey.io/commands/client-unpause) | Resumes processing commands from paused clients. | 1.0.0 | 6.2.0 |
+| CLUSTER | [doc](https://valkey.io/commands/cluster) | A container for Cluster commands. | 1.0.0 | 3.0.0 |
+| CLUSTER ADDSLOTS | [doc](https://valkey.io/commands/cluster-addslots) | Assigns new hash slots to a node. | 1.0.0 | 3.0.0 |
+| CLUSTER ADDSLOTSRANGE | [doc](https://valkey.io/commands/cluster-addslotsrange) | Assigns new hash slot ranges to a node. | 1.0.0 | 7.0.0 |
+| CLUSTER BUMPEPOCH | [doc](https://valkey.io/commands/cluster-bumpepoch) | Advances the cluster config epoch. | 1.0.0 | 3.0.0 |
+| CLUSTER COUNT FAILURE REPORTS | [doc](https://valkey.io/commands/cluster-count-failure-reports) | Returns the number of active failure reports active for a node. | 1.0.0 | 3.0.0 |
+| CLUSTER COUNTKEYSINSLOT | [doc](https://valkey.io/commands/cluster-countkeysinslot) | Returns the number of keys in a hash slot. | 1.0.0 | 3.0.0 |
+| CLUSTER DELSLOTS | [doc](https://valkey.io/commands/cluster-delslots) | Sets hash slots as unbound for a node. | 1.0.0 | 3.0.0 |
+| CLUSTER DELSLOTSRANGE | [doc](https://valkey.io/commands/cluster-delslotsrange) | Sets hash slot ranges as unbound for a node. | 1.0.0 | 7.0.0 |
+| CLUSTER FAILOVER | [doc](https://valkey.io/commands/cluster-failover) | Forces a replica to perform a manual failover of its primary. | 1.0.0 | 3.0.0 |
+| CLUSTER FLUSHSLOTS | [doc](https://valkey.io/commands/cluster-flushslots) | Deletes all slots information from a node. | 1.0.0 | 3.0.0 |
+| CLUSTER FORGET | [doc](https://valkey.io/commands/cluster-forget) | Removes a node from the nodes table. | 1.0.0 | 3.0.0 |
+| CLUSTER GETKEYSINSLOT | [doc](https://valkey.io/commands/cluster-getkeysinslot) | Returns the key names in a hash slot. | 1.0.0 | 3.0.0 |
+| CLUSTER HELP | [doc](https://valkey.io/commands/cluster-help) | Returns helpful text about the different subcommands. | 1.0.0 | 5.0.0 |
+| CLUSTER INFO | [doc](https://valkey.io/commands/cluster-info) | Returns information about the state of a node. | 1.0.0 | 3.0.0 |
+| CLUSTER KEYSLOT | [doc](https://valkey.io/commands/cluster-keyslot) | Returns the hash slot for a key. | 1.0.0 | 3.0.0 |
+| CLUSTER LINKS | [doc](https://valkey.io/commands/cluster-links) | Returns a list of all TCP links to and from peer nodes. | 1.0.0 | 7.0.0 |
+| CLUSTER MEET | [doc](https://valkey.io/commands/cluster-meet) | Forces a node to handshake with another node. | 1.0.0 | 3.0.0 |
+| CLUSTER MYID | [doc](https://valkey.io/commands/cluster-myid) | Returns the ID of a node. | 1.0.0 | 3.0.0 |
+| CLUSTER MYSHARDID | [doc](https://valkey.io/commands/cluster-myshardid) | Returns the shard ID of a node. | 1.0.0 | 7.2.0 |
+| CLUSTER NODES | [doc](https://valkey.io/commands/cluster-nodes) | Returns the cluster configuration for a node. | 1.0.0 | 3.0.0 |
+| CLUSTER REPLICAS | [doc](https://valkey.io/commands/cluster-replicas) | Lists the replica nodes of a primary node. | 1.0.0 | 5.0.0 |
+| CLUSTER REPLICATE | [doc](https://valkey.io/commands/cluster-replicate) | Configure a node as replica of a primary node. | 1.0.0 | 3.0.0 |
+| CLUSTER RESET | [doc](https://valkey.io/commands/cluster-reset) | Resets a node. | 1.0.0 | 3.0.0 |
+| CLUSTER SAVECONFIG | [doc](https://valkey.io/commands/cluster-saveconfig) | Forces a node to save the cluster configuration to disk. | 1.0.0 | 3.0.0 |
+| CLUSTER SET CONFIG EPOCH | [doc](https://valkey.io/commands/cluster-set-config-epoch) | Sets the configuration epoch for a new node. | 1.0.0 | 3.0.0 |
+| CLUSTER SETSLOT | [doc](https://valkey.io/commands/cluster-setslot) | Binds a hash slot to a node. | 1.0.0 | 3.0.0 |
+| CLUSTER SHARDS | [doc](https://valkey.io/commands/cluster-shards) | Returns the mapping of cluster slots to shards. | 1.0.0 | 7.0.0 |
+| CLUSTER SLAVES | [doc](https://valkey.io/commands/cluster-slaves) | Lists the replica nodes of a primary node. | 1.0.0 | 3.0.0 |
+| CLUSTER SLOT STATS | [doc](https://valkey.io/commands/cluster-slot-stats) | Return an array of slot usage statistics for slots assigned to the current node. | 1.0.0 | 8.0.0 |
+| CLUSTER SLOTS | [doc](https://valkey.io/commands/cluster-slots) | Returns the mapping of cluster slots to nodes. | 1.0.0 | 3.0.0 |
+| COMMAND | [doc](https://valkey.io/commands/command) | Returns detailed information about all commands. | 1.0.0 | 2.8.13 |
+| COMMAND COUNT | [doc](https://valkey.io/commands/command-count) | Returns a count of commands. | 1.0.0 | 2.8.13 |
+| COMMAND DOCS | [doc](https://valkey.io/commands/command-docs) | Returns documentary information about one, multiple or all commands. | 1.0.0 | 7.0.0 |
+| COMMAND GETKEYS | [doc](https://valkey.io/commands/command-getkeys) | Extracts the key names from an arbitrary command. | 1.0.0 | 2.8.13 |
+| COMMAND GETKEYSANDFLAGS | [doc](https://valkey.io/commands/command-getkeysandflags) | Extracts the key names and access flags for an arbitrary command. | 1.0.0 | 7.0.0 |
+| COMMAND HELP | [doc](https://valkey.io/commands/command-help) | Returns helpful text about the different subcommands. | 1.0.0 | 5.0.0 |
+| COMMAND INFO | [doc](https://valkey.io/commands/command-info) | Returns information about one, multiple or all commands. | 1.0.0 | 2.8.13 |
+| COMMAND LIST | [doc](https://valkey.io/commands/command-list) | Returns a list of command names. | 1.0.0 | 7.0.0 |
+| CONFIG | [doc](https://valkey.io/commands/config) | A container for server configuration commands. | 1.0.0 | 2.0.0 |
+| CONFIG GET | [doc](https://valkey.io/commands/config-get) | Returns the effective values of configuration parameters. | 1.0.0 | 2.0.0 |
+| CONFIG HELP | [doc](https://valkey.io/commands/config-help) | Returns helpful text about the different subcommands. | 1.0.0 | 5.0.0 |
+| CONFIG RESETSTAT | [doc](https://valkey.io/commands/config-resetstat) | Resets the server's statistics. | 1.0.0 | 2.0.0 |
+| CONFIG REWRITE | [doc](https://valkey.io/commands/config-rewrite) | Persists the effective configuration to file. | 1.0.0 | 2.8.0 |
+| CONFIG SET | [doc](https://valkey.io/commands/config-set) | Sets configuration parameters in-flight. | 1.0.0 | 2.0.0 |
+| COPY | [doc](https://valkey.io/commands/copy) | Copies the value of a key to a new key. | 1.0.0 | 6.2.0 |
+| DBSIZE | [doc](https://valkey.io/commands/dbsize) | Returns the number of keys in the database. | 1.0.0 | 1.0.0 |
+| DEBUG | [doc](https://valkey.io/commands/debug) | A container for debugging commands. | 1.0.0 | 1.0.0 |
+| DECR | [doc](https://valkey.io/commands/decr) | Decrements the integer value of a key by one. Uses 0 as initial value if the key doesn't exist. | 1.0.0 | 1.0.0 |
+| DECRBY | [doc](https://valkey.io/commands/decrby) | Decrements a number from the integer value of a key. Uses 0 as initial value if the key doesn't exist. | 1.0.0 | 1.0.0 |
+| DEL | [doc](https://valkey.io/commands/del) | Deletes one or more keys. | 1.0.0 | 1.0.0 |
+| DISCARD | [doc](https://valkey.io/commands/discard) | Discards a transaction. | 1.0.0 | 2.0.0 |
+| DUMP | [doc](https://valkey.io/commands/dump) | Returns a serialized representation of the value stored at a key. | 1.0.0 | 2.6.0 |
+| ECHO | [doc](https://valkey.io/commands/echo) | Returns the given string. | 1.0.0 | 1.0.0 |
+| EVAL | [doc](https://valkey.io/commands/eval) | Executes a server-side Lua script. | 1.0.0 | 2.6.0 |
+| EVALSHA | [doc](https://valkey.io/commands/evalsha) | Executes a server-side Lua script by SHA1 digest. | 1.0.0 | 2.6.0 |
+| EVALSHA_RO | [doc](https://valkey.io/commands/evalsha_ro) | Executes a read-only server-side Lua script by SHA1 digest. | 1.0.0 | 7.0.0 |
+| EVAL_RO | [doc](https://valkey.io/commands/eval_ro) | Executes a read-only server-side Lua script. | 1.0.0 | 7.0.0 |
+| EVICT | [doc](https://valkey.io/commands/evict) | Evicts one or more keys using the same mechanism as memory pressure eviction. If no keys are specified, evicts one random key. | 1.0.0 | 8.0.0 |
+| EXEC | [doc](https://valkey.io/commands/exec) | Executes all commands in a transaction. | 1.0.0 | 1.2.0 |
+| EXISTS | [doc](https://valkey.io/commands/exists) | Determines whether one or more keys exist. | 1.0.0 | 1.0.0 |
+| EXPIRE | [doc](https://valkey.io/commands/expire) | Sets the expiration time of a key in seconds. | 1.0.0 | 1.0.0 |
+| EXPIREAT | [doc](https://valkey.io/commands/expireat) | Sets the expiration time of a key to a Unix timestamp. | 1.0.0 | 1.2.0 |
+| EXPIRETIME | [doc](https://valkey.io/commands/expiretime) | Returns the expiration time of a key as a Unix timestamp. | 1.0.0 | 7.0.0 |
+| FAILOVER | [doc](https://valkey.io/commands/failover) | Starts a coordinated failover from a server to one of its replicas. | 1.0.0 | 6.2.0 |
+| FCALL | [doc](https://valkey.io/commands/fcall) | Invokes a function. | 1.0.0 | 7.0.0 |
+| FCALL_RO | [doc](https://valkey.io/commands/fcall_ro) | Invokes a read-only function. | 1.0.0 | 7.0.0 |
+| FLUSHALL | [doc](https://valkey.io/commands/flushall) | Removes all keys from all databases. | 1.0.0 | 1.0.0 |
+| FLUSHDB | [doc](https://valkey.io/commands/flushdb) | Remove all keys from the current database. | 1.0.0 | 1.0.0 |
+| FUNCTION | [doc](https://valkey.io/commands/function) | A container for function commands. | 1.0.0 | 7.0.0 |
+| FUNCTION DELETE | [doc](https://valkey.io/commands/function-delete) | Deletes a library and its functions. | 1.0.0 | 7.0.0 |
+| FUNCTION DUMP | [doc](https://valkey.io/commands/function-dump) | Dumps all libraries into a serialized binary payload. | 1.0.0 | 7.0.0 |
+| FUNCTION FLUSH | [doc](https://valkey.io/commands/function-flush) | Deletes all libraries and functions. | 1.0.0 | 7.0.0 |
+| FUNCTION HELP | [doc](https://valkey.io/commands/function-help) | Returns helpful text about the different subcommands. | 1.0.0 | 7.0.0 |
+| FUNCTION KILL | [doc](https://valkey.io/commands/function-kill) | Terminates a function during execution. | 1.0.0 | 7.0.0 |
+| FUNCTION LIST | [doc](https://valkey.io/commands/function-list) | Returns information about all libraries. | 1.0.0 | 7.0.0 |
+| FUNCTION LOAD | [doc](https://valkey.io/commands/function-load) | Creates a library. | 1.0.0 | 7.0.0 |
+| FUNCTION RESTORE | [doc](https://valkey.io/commands/function-restore) | Restores all libraries from a payload. | 1.0.0 | 7.0.0 |
+| FUNCTION STATS | [doc](https://valkey.io/commands/function-stats) | Returns information about a function during execution. | 1.0.0 | 7.0.0 |
+| GEOADD | [doc](https://valkey.io/commands/geoadd) | Adds one or more members to a geospatial index. The key is created if it doesn't exist. | 1.0.0 | 3.2.0 |
+| GEODIST | [doc](https://valkey.io/commands/geodist) | Returns the distance between two members of a geospatial index. | 1.0.0 | 3.2.0 |
+| GEOHASH | [doc](https://valkey.io/commands/geohash) | Returns members from a geospatial index as geohash strings. | 1.0.0 | 3.2.0 |
+| GEOPOS | [doc](https://valkey.io/commands/geopos) | Returns the longitude and latitude of members from a geospatial index. | 1.0.0 | 3.2.0 |
+| GEORADIUS | [doc](https://valkey.io/commands/georadius) | Queries a geospatial index for members within a distance from a coordinate, optionally stores the result. | 1.0.0 | 3.2.0 |
+| GEORADIUSBYMEMBER | [doc](https://valkey.io/commands/georadiusbymember) | Queries a geospatial index for members within a distance from a member, optionally stores the result. | 1.0.0 | 3.2.0 |
+| GEORADIUSBYMEMBER_RO | [doc](https://valkey.io/commands/georadiusbymember_ro) | Returns members from a geospatial index that are within a distance from a member. | 1.0.0 | 3.2.10 |
+| GEORADIUS_RO | [doc](https://valkey.io/commands/georadius_ro) | Returns members from a geospatial index that are within a distance from a coordinate. | 1.0.0 | 3.2.10 |
+| GEOSEARCH | [doc](https://valkey.io/commands/geosearch) | Queries a geospatial index for members inside an area of a box or a circle. | 1.0.0 | 6.2.0 |
+| GEOSEARCHSTORE | [doc](https://valkey.io/commands/geosearchstore) | Queries a geospatial index for members inside an area of a box or a circle, optionally stores the result. | 1.0.0 | 6.2.0 |
+| GET | [doc](https://valkey.io/commands/get) | Returns the string value of a key. | 1.0.0 | 1.0.0 |
+| GETBIT | [doc](https://valkey.io/commands/getbit) | Returns a bit value by offset. | 1.0.0 | 2.2.0 |
+| GETDEL | [doc](https://valkey.io/commands/getdel) | Returns the string value of a key after deleting the key. | 1.0.0 | 6.2.0 |
+| GETEX | [doc](https://valkey.io/commands/getex) | Returns the string value of a key after setting its expiration time. | 1.0.0 | 6.2.0 |
+| GETRANGE | [doc](https://valkey.io/commands/getrange) | Returns a substring of the string stored at a key. | 1.0.0 | 2.4.0 |
+| GETSET | [doc](https://valkey.io/commands/getset) | Returns the previous string value of a key after setting it to a new value. | 1.0.0 | 1.0.0 |
+| HDEL | [doc](https://valkey.io/commands/hdel) | Deletes one or more fields and their values from a hash. Deletes the hash if no fields remain. | 1.0.0 | 2.0.0 |
+| HELLO | [doc](https://valkey.io/commands/hello) | Handshakes with the server. | 1.0.0 | 6.0.0 |
+| HEXISTS | [doc](https://valkey.io/commands/hexists) | Determines whether a field exists in a hash. | 1.0.0 | 2.0.0 |
+| HGET | [doc](https://valkey.io/commands/hget) | Returns the value of a field in a hash. | 1.0.0 | 2.0.0 |
+| HGETALL | [doc](https://valkey.io/commands/hgetall) | Returns all fields and values in a hash. | 1.0.0 | 2.0.0 |
+| HINCRBY | [doc](https://valkey.io/commands/hincrby) | Increments the integer value of a field in a hash by a number. Uses 0 as initial value if the field doesn't exist. | 1.0.0 | 2.0.0 |
+| HINCRBYFLOAT | [doc](https://valkey.io/commands/hincrbyfloat) | Increments the floating point value of a field by a number. Uses 0 as initial value if the field doesn't exist. | 1.0.0 | 2.6.0 |
+| HKEYS | [doc](https://valkey.io/commands/hkeys) | Returns all fields in a hash. | 1.0.0 | 2.0.0 |
+| HLEN | [doc](https://valkey.io/commands/hlen) | Returns the number of fields in a hash. | 1.0.0 | 2.0.0 |
+| HMGET | [doc](https://valkey.io/commands/hmget) | Returns the values of all fields in a hash. | 1.0.0 | 2.0.0 |
+| HMSET | [doc](https://valkey.io/commands/hmset) | Sets the values of multiple fields. | 1.0.0 | 2.0.0 |
+| HRANDFIELD | [doc](https://valkey.io/commands/hrandfield) | Returns one or more random fields from a hash. | 1.0.0 | 6.2.0 |
+| HSCAN | [doc](https://valkey.io/commands/hscan) | Iterates over fields and values of a hash. | 1.0.0 | 2.8.0 |
+| HSET | [doc](https://valkey.io/commands/hset) | Creates or modifies the value of a field in a hash. | 1.0.0 | 2.0.0 |
+| HSETNX | [doc](https://valkey.io/commands/hsetnx) | Sets the value of a field in a hash only when the field doesn't exist. | 1.0.0 | 2.0.0 |
+| HSTRLEN | [doc](https://valkey.io/commands/hstrlen) | Returns the length of the value of a field. | 1.0.0 | 3.2.0 |
+| HVALS | [doc](https://valkey.io/commands/hvals) | Returns all values in a hash. | 1.0.0 | 2.0.0 |
+| INCR | [doc](https://valkey.io/commands/incr) | Increments the integer value of a key by one. Uses 0 as initial value if the key doesn't exist. | 1.0.0 | 1.0.0 |
+| INCRBY | [doc](https://valkey.io/commands/incrby) | Increments the integer value of a key by a number. Uses 0 as initial value if the key doesn't exist. | 1.0.0 | 1.0.0 |
+| INCRBYFLOAT | [doc](https://valkey.io/commands/incrbyfloat) | Increment the floating point value of a key by a number. Uses 0 as initial value if the key doesn't exist. | 1.0.0 | 2.6.0 |
+| INFO | [doc](https://valkey.io/commands/info) | Returns information and statistics about the server. | 1.0.0 | 1.0.0 |
+| KEYS | [doc](https://valkey.io/commands/keys) | Returns all key names that match a pattern. | 1.0.0 | 1.0.0 |
+| LASTSAVE | [doc](https://valkey.io/commands/lastsave) | Returns the Unix timestamp of the last successful save to disk. | 1.0.0 | 1.0.0 |
+| LATENCY | [doc](https://valkey.io/commands/latency) | A container for latency diagnostics commands. | 1.0.0 | 2.8.13 |
+| LATENCY DOCTOR | [doc](https://valkey.io/commands/latency-doctor) | Returns a human-readable latency analysis report. | 1.0.0 | 2.8.13 |
+| LATENCY GRAPH | [doc](https://valkey.io/commands/latency-graph) | Returns a latency graph for an event. | 1.0.0 | 2.8.13 |
+| LATENCY HELP | [doc](https://valkey.io/commands/latency-help) | Returns helpful text about the different subcommands. | 1.0.0 | 2.8.13 |
+| LATENCY HISTOGRAM | [doc](https://valkey.io/commands/latency-histogram) | Returns the cumulative distribution of latencies of a subset or all commands. | 1.0.0 | 7.0.0 |
+| LATENCY HISTORY | [doc](https://valkey.io/commands/latency-history) | Returns timestamp-latency samples for an event. | 1.0.0 | 2.8.13 |
+| LATENCY LATEST | [doc](https://valkey.io/commands/latency-latest) | Returns the latest latency samples for all events. | 1.0.0 | 2.8.13 |
+| LATENCY RESET | [doc](https://valkey.io/commands/latency-reset) | Resets the latency data for one or more events. | 1.0.0 | 2.8.13 |
+| LCS | [doc](https://valkey.io/commands/lcs) | Finds the longest common substring. | 1.0.0 | 7.0.0 |
+| LINDEX | [doc](https://valkey.io/commands/lindex) | Returns an element from a list by its index. | 1.0.0 | 1.0.0 |
+| LINSERT | [doc](https://valkey.io/commands/linsert) | Inserts an element before or after another element in a list. | 1.0.0 | 2.2.0 |
+| LLEN | [doc](https://valkey.io/commands/llen) | Returns the length of a list. | 1.0.0 | 1.0.0 |
+| LMOVE | [doc](https://valkey.io/commands/lmove) | Returns an element after popping it from one list and pushing it to another. Deletes the list if the last element was moved. | 1.0.0 | 6.2.0 |
+| LMPOP | [doc](https://valkey.io/commands/lmpop) | Returns multiple elements from a list after removing them. Deletes the list if the last element was popped. | 1.0.0 | 7.0.0 |
+| LOLWUT | [doc](https://valkey.io/commands/lolwut) | Displays computer art and the server version | 1.0.0 | 5.0.0 |
+| LPOP | [doc](https://valkey.io/commands/lpop) | Returns the first elements in a list after removing it. Deletes the list if the last element was popped. | 1.0.0 | 1.0.0 |
+| LPOS | [doc](https://valkey.io/commands/lpos) | Returns the index of matching elements in a list. | 1.0.0 | 6.0.6 |
+| LPUSH | [doc](https://valkey.io/commands/lpush) | Prepends one or more elements to a list. Creates the key if it doesn't exist. | 1.0.0 | 1.0.0 |
+| LPUSHX | [doc](https://valkey.io/commands/lpushx) | Prepends one or more elements to a list only when the list exists. | 1.0.0 | 2.2.0 |
+| LRANGE | [doc](https://valkey.io/commands/lrange) | Returns a range of elements from a list. | 1.0.0 | 1.0.0 |
+| LREM | [doc](https://valkey.io/commands/lrem) | Removes elements from a list. Deletes the list if the last element was removed. | 1.0.0 | 1.0.0 |
+| LSET | [doc](https://valkey.io/commands/lset) | Sets the value of an element in a list by its index. | 1.0.0 | 1.0.0 |
+| LTRIM | [doc](https://valkey.io/commands/ltrim) | Removes elements from both ends a list. Deletes the list if all elements were trimmed. | 1.0.0 | 1.0.0 |
+| MEMORY | [doc](https://valkey.io/commands/memory) | A container for memory diagnostics commands. | 1.0.0 | 4.0.0 |
+| MEMORY DOCTOR | [doc](https://valkey.io/commands/memory-doctor) | Outputs a memory problems report. | 1.0.0 | 4.0.0 |
+| MEMORY HELP | [doc](https://valkey.io/commands/memory-help) | Returns helpful text about the different subcommands. | 1.0.0 | 4.0.0 |
+| MEMORY MALLOC STATS | [doc](https://valkey.io/commands/memory-malloc-stats) | Returns the allocator statistics. | 1.0.0 | 4.0.0 |
+| MEMORY PURGE | [doc](https://valkey.io/commands/memory-purge) | Asks the allocator to release memory. | 1.0.0 | 4.0.0 |
+| MEMORY STATS | [doc](https://valkey.io/commands/memory-stats) | Returns details about memory usage. | 1.0.0 | 4.0.0 |
+| MEMORY USAGE | [doc](https://valkey.io/commands/memory-usage) | Estimates the memory usage of a key. | 1.0.0 | 4.0.0 |
+| MGET | [doc](https://valkey.io/commands/mget) | Atomically returns the string values of one or more keys. | 1.0.0 | 1.0.0 |
+| MIGRATE | [doc](https://valkey.io/commands/migrate) | Atomically transfers a key from one instance to another. | 1.0.0 | 2.6.0 |
+| MODULE | [doc](https://valkey.io/commands/module) | A container for module commands. | 1.0.0 | 4.0.0 |
+| MODULE HELP | [doc](https://valkey.io/commands/module-help) | Returns helpful text about the different subcommands. | 1.0.0 | 5.0.0 |
+| MODULE LIST | [doc](https://valkey.io/commands/module-list) | Returns all loaded modules. | 1.0.0 | 4.0.0 |
+| MODULE LOAD | [doc](https://valkey.io/commands/module-load) | Loads a module. | 1.0.0 | 4.0.0 |
+| MODULE LOADEX | [doc](https://valkey.io/commands/module-loadex) | Loads a module using extended parameters. | 1.0.0 | 7.0.0 |
+| MODULE UNLOAD | [doc](https://valkey.io/commands/module-unload) | Unloads a module. | 1.0.0 | 4.0.0 |
+| MONITOR | [doc](https://valkey.io/commands/monitor) | Listens for all requests received by the server in real-time. | 1.0.0 | 1.0.0 |
+| MOVE | [doc](https://valkey.io/commands/move) | Moves a key to another database. | 1.0.0 | 1.0.0 |
+| MSET | [doc](https://valkey.io/commands/mset) | Atomically creates or modifies the string values of one or more keys. | 1.0.0 | 1.0.1 |
+| MSETNX | [doc](https://valkey.io/commands/msetnx) | Atomically modifies the string values of one or more keys only when all keys don't exist. | 1.0.0 | 1.0.1 |
+| MULTI | [doc](https://valkey.io/commands/multi) | Starts a transaction. | 1.0.0 | 1.2.0 |
+| OBJECT | [doc](https://valkey.io/commands/object) | A container for object introspection commands. | 1.0.0 | 2.2.3 |
+| OBJECT ENCODING | [doc](https://valkey.io/commands/object-encoding) | Returns the internal encoding of an object. | 1.0.0 | 2.2.3 |
+| OBJECT FREQ | [doc](https://valkey.io/commands/object-freq) | Returns the logarithmic access frequency counter of an object. | 1.0.0 | 4.0.0 |
+| OBJECT HELP | [doc](https://valkey.io/commands/object-help) | Returns helpful text about the different subcommands. | 1.0.0 | 6.2.0 |
+| OBJECT IDLETIME | [doc](https://valkey.io/commands/object-idletime) | Returns the time since the last access to an object. | 1.0.0 | 2.2.3 |
+| OBJECT REFCOUNT | [doc](https://valkey.io/commands/object-refcount) | Returns the reference count of a value of a key. | 1.0.0 | 2.2.3 |
+| PERSIST | [doc](https://valkey.io/commands/persist) | Removes the expiration time of a key. | 1.0.0 | 2.2.0 |
+| PEXPIRE | [doc](https://valkey.io/commands/pexpire) | Sets the expiration time of a key in milliseconds. | 1.0.0 | 2.6.0 |
+| PEXPIREAT | [doc](https://valkey.io/commands/pexpireat) | Sets the expiration time of a key to a Unix milliseconds timestamp. | 1.0.0 | 2.6.0 |
+| PEXPIRETIME | [doc](https://valkey.io/commands/pexpiretime) | Returns the expiration time of a key as a Unix milliseconds timestamp. | 1.0.0 | 7.0.0 |
+| PFADD | [doc](https://valkey.io/commands/pfadd) | Adds elements to a HyperLogLog key. Creates the key if it doesn't exist. | 1.0.0 | 2.8.9 |
+| PFCOUNT | [doc](https://valkey.io/commands/pfcount) | Returns the approximated cardinality of the set(s) observed by the HyperLogLog key(s). | 1.0.0 | 2.8.9 |
+| PFDEBUG | [doc](https://valkey.io/commands/pfdebug) | Internal commands for debugging HyperLogLog values. | 1.0.0 | 2.8.9 |
+| PFMERGE | [doc](https://valkey.io/commands/pfmerge) | Merges one or more HyperLogLog values into a single key. | 1.0.0 | 2.8.9 |
+| PFSELFTEST | [doc](https://valkey.io/commands/pfselftest) | An internal command for testing HyperLogLog values. | 1.0.0 | 2.8.9 |
+| PING | [doc](https://valkey.io/commands/ping) | Returns the server's liveliness response. | 1.0.0 | 1.0.0 |
+| PSETEX | [doc](https://valkey.io/commands/psetex) | Sets both string value and expiration time in milliseconds of a key. The key is created if it doesn't exist. | 1.0.0 | 2.6.0 |
+| PSUBSCRIBE | [doc](https://valkey.io/commands/psubscribe) | Listens for messages published to channels that match one or more patterns. | 1.0.0 | 2.0.0 |
+| PSYNC | [doc](https://valkey.io/commands/psync) | An internal command used in replication. | 1.0.0 | 2.8.0 |
+| PTTL | [doc](https://valkey.io/commands/pttl) | Returns the expiration time in milliseconds of a key. | 1.0.0 | 2.6.0 |
+| PUBLISH | [doc](https://valkey.io/commands/publish) | Posts a message to a channel. | 1.0.0 | 2.0.0 |
+| PUBSUB | [doc](https://valkey.io/commands/pubsub) | A container for Pub/Sub commands. | 1.0.0 | 2.8.0 |
+| PUBSUB CHANNELS | [doc](https://valkey.io/commands/pubsub-channels) | Returns the active channels. | 1.0.0 | 2.8.0 |
+| PUBSUB HELP | [doc](https://valkey.io/commands/pubsub-help) | Returns helpful text about the different subcommands. | 1.0.0 | 6.2.0 |
+| PUBSUB NUMPAT | [doc](https://valkey.io/commands/pubsub-numpat) | Returns a count of unique pattern subscriptions. | 1.0.0 | 2.8.0 |
+| PUBSUB NUMSUB | [doc](https://valkey.io/commands/pubsub-numsub) | Returns a count of subscribers to channels. | 1.0.0 | 2.8.0 |
+| PUBSUB SHARDCHANNELS | [doc](https://valkey.io/commands/pubsub-shardchannels) | Returns the active shard channels. | 1.0.0 | 7.0.0 |
+| PUBSUB SHARDNUMSUB | [doc](https://valkey.io/commands/pubsub-shardnumsub) | Returns the count of subscribers of shard channels. | 1.0.0 | 7.0.0 |
+| PUNSUBSCRIBE | [doc](https://valkey.io/commands/punsubscribe) | Stops listening to messages published to channels that match one or more patterns. | 1.0.0 | 2.0.0 |
+| QUIT | [doc](https://valkey.io/commands/quit) | Closes the connection. | 1.0.0 | 1.0.0 |
+| RANDOMKEY | [doc](https://valkey.io/commands/randomkey) | Returns a random key name from the database. | 1.0.0 | 1.0.0 |
+| READONLY | [doc](https://valkey.io/commands/readonly) | Enables read-only queries for a connection to a Valkey replica node. | 1.0.0 | 3.0.0 |
+| READWRITE | [doc](https://valkey.io/commands/readwrite) | Enables read-write queries for a connection to a Valkey replica node. | 1.0.0 | 3.0.0 |
+| RENAME | [doc](https://valkey.io/commands/rename) | Renames a key and overwrites the destination. | 1.0.0 | 1.0.0 |
+| RENAMENX | [doc](https://valkey.io/commands/renamenx) | Renames a key only when the target key name doesn't exist. | 1.0.0 | 1.0.0 |
+| REPLCONF | [doc](https://valkey.io/commands/replconf) | An internal command for configuring the replication stream. | 1.0.0 | 3.0.0 |
+| REPLICAOF | [doc](https://valkey.io/commands/replicaof) | Configures a server as replica of another, or promotes it to a primary. | 1.0.0 | 5.0.0 |
+| RESET | [doc](https://valkey.io/commands/reset) | Resets the connection. | 1.0.0 | 6.2.0 |
+| RESTORE | [doc](https://valkey.io/commands/restore) | Creates a key from the serialized representation of a value. | 1.0.0 | 2.6.0 |
+| RESTORE ASKING | [doc](https://valkey.io/commands/restore-asking) | An internal command for migrating keys in a cluster. | 1.0.0 | 3.0.0 |
+| ROLE | [doc](https://valkey.io/commands/role) | Returns the replication role. | 1.0.0 | 2.8.12 |
+| RPOP | [doc](https://valkey.io/commands/rpop) | Returns and removes the last elements of a list. Deletes the list if the last element was popped. | 1.0.0 | 1.0.0 |
+| RPOPLPUSH | [doc](https://valkey.io/commands/rpoplpush) | Returns the last element of a list after removing and pushing it to another list. Deletes the list if the last element was popped. | 1.0.0 | 1.2.0 |
+| RPUSH | [doc](https://valkey.io/commands/rpush) | Appends one or more elements to a list. Creates the key if it doesn't exist. | 1.0.0 | 1.0.0 |
+| RPUSHX | [doc](https://valkey.io/commands/rpushx) | Appends an element to a list only when the list exists. | 1.0.0 | 2.2.0 |
+| SADD | [doc](https://valkey.io/commands/sadd) | Adds one or more members to a set. Creates the key if it doesn't exist. | 1.0.0 | 1.0.0 |
+| SAVE | [doc](https://valkey.io/commands/save) | Synchronously saves the database(s) to disk. | 1.0.0 | 1.0.0 |
+| SCAN | [doc](https://valkey.io/commands/scan) | Iterates over the key names in the database. | 1.0.0 | 2.8.0 |
+| SCARD | [doc](https://valkey.io/commands/scard) | Returns the number of members in a set. | 1.0.0 | 1.0.0 |
+| SCRIPT | [doc](https://valkey.io/commands/script) | A container for Lua scripts management commands. | 1.0.0 | 2.6.0 |
+| SCRIPT DEBUG | [doc](https://valkey.io/commands/script-debug) | Sets the debug mode of server-side Lua scripts. | 1.0.0 | 3.2.0 |
+| SCRIPT EXISTS | [doc](https://valkey.io/commands/script-exists) | Determines whether server-side Lua scripts exist in the script cache. | 1.0.0 | 2.6.0 |
+| SCRIPT FLUSH | [doc](https://valkey.io/commands/script-flush) | Removes all server-side Lua scripts from the script cache. | 1.0.0 | 2.6.0 |
+| SCRIPT HELP | [doc](https://valkey.io/commands/script-help) | Returns helpful text about the different subcommands. | 1.0.0 | 5.0.0 |
+| SCRIPT KILL | [doc](https://valkey.io/commands/script-kill) | Terminates a server-side Lua script during execution. | 1.0.0 | 2.6.0 |
+| SCRIPT LOAD | [doc](https://valkey.io/commands/script-load) | Loads a server-side Lua script to the script cache. | 1.0.0 | 2.6.0 |
+| SCRIPT SHOW | [doc](https://valkey.io/commands/script-show) | Show server-side Lua script in the script cache. | 1.0.0 | 8.0.0 |
+| SDIFF | [doc](https://valkey.io/commands/sdiff) | Returns the difference of multiple sets. | 1.0.0 | 1.0.0 |
+| SDIFFSTORE | [doc](https://valkey.io/commands/sdiffstore) | Stores the difference of multiple sets in a key. | 1.0.0 | 1.0.0 |
+| SELECT | [doc](https://valkey.io/commands/select) | Changes the selected database. | 1.0.0 | 1.0.0 |
+| SENTINEL | [doc](https://valkey.io/commands/sentinel) | A container for Sentinel commands. | 1.0.0 | 2.8.4 |
+| SENTINEL CKQUORUM | [doc](https://valkey.io/commands/sentinel-ckquorum) | Checks for a Sentinel quorum. | 1.0.0 | 2.8.4 |
+| SENTINEL CONFIG | [doc](https://valkey.io/commands/sentinel-config) | Configures Sentinel. | 1.0.0 | 6.2.0 |
+| SENTINEL DEBUG | [doc](https://valkey.io/commands/sentinel-debug) | Lists or updates the current configurable parameters of Sentinel. | 1.0.0 | 7.0.0 |
+| SENTINEL FAILOVER | [doc](https://valkey.io/commands/sentinel-failover) | Forces a Sentinel failover. | 1.0.0 | 2.8.4 |
+| SENTINEL FLUSHCONFIG | [doc](https://valkey.io/commands/sentinel-flushconfig) | Rewrites the Sentinel configuration file. | 1.0.0 | 2.8.4 |
+| SENTINEL GET MASTER ADDR BY NAME | [doc](https://valkey.io/commands/sentinel-get-master-addr-by-name) | Returns the port and address of a primary instance. | 1.0.0 | 2.8.4 |
+| SENTINEL GET PRIMARY ADDR BY NAME | [doc](https://valkey.io/commands/sentinel-get-primary-addr-by-name) | Returns the port and address of a primary instance. | 1.0.0 | 8.0.0 |
+| SENTINEL HELP | [doc](https://valkey.io/commands/sentinel-help) | Returns helpful text about the different subcommands. | 1.0.0 | 6.2.0 |
+| SENTINEL INFO CACHE | [doc](https://valkey.io/commands/sentinel-info-cache) | Returns the cached `INFO` replies from the deployment's instances. | 1.0.0 | 3.2.0 |
+| SENTINEL IS MASTER DOWN BY ADDR | [doc](https://valkey.io/commands/sentinel-is-master-down-by-addr) | Determines whether a primary instance is down. | 1.0.0 | 2.8.4 |
+| SENTINEL IS PRIMARY DOWN BY ADDR | [doc](https://valkey.io/commands/sentinel-is-primary-down-by-addr) | Determines whether a primary instance is down. | 1.0.0 | 8.0.0 |
+| SENTINEL MASTER | [doc](https://valkey.io/commands/sentinel-master) | Returns the state of a primary instance. | 1.0.0 | 2.8.4 |
+| SENTINEL MASTERS | [doc](https://valkey.io/commands/sentinel-masters) | Returns a list of monitored primaries. | 1.0.0 | 2.8.4 |
+| SENTINEL MONITOR | [doc](https://valkey.io/commands/sentinel-monitor) | Starts monitoring. | 1.0.0 | 2.8.4 |
+| SENTINEL MYID | [doc](https://valkey.io/commands/sentinel-myid) | Returns the Sentinel instance ID. | 1.0.0 | 6.2.0 |
+| SENTINEL PENDING SCRIPTS | [doc](https://valkey.io/commands/sentinel-pending-scripts) | Returns information about pending scripts for Sentinel. | 1.0.0 | 2.8.4 |
+| SENTINEL PRIMARIES | [doc](https://valkey.io/commands/sentinel-primaries) | Returns a list of monitored primaries. | 1.0.0 | 8.0.0 |
+| SENTINEL PRIMARY | [doc](https://valkey.io/commands/sentinel-primary) | Returns the state of a primary instance. | 1.0.0 | 8.0.0 |
+| SENTINEL REMOVE | [doc](https://valkey.io/commands/sentinel-remove) | Stops monitoring. | 1.0.0 | 2.8.4 |
+| SENTINEL REPLICAS | [doc](https://valkey.io/commands/sentinel-replicas) | Returns a list of the monitored replicas. | 1.0.0 | 5.0.0 |
+| SENTINEL RESET | [doc](https://valkey.io/commands/sentinel-reset) | Resets primaries by name matching a pattern. | 1.0.0 | 2.8.4 |
+| SENTINEL SENTINELS | [doc](https://valkey.io/commands/sentinel-sentinels) | Returns a list of Sentinel instances. | 1.0.0 | 2.8.4 |
+| SENTINEL SET | [doc](https://valkey.io/commands/sentinel-set) | Changes the configuration of a monitored primary. | 1.0.0 | 2.8.4 |
+| SENTINEL SIMULATE FAILURE | [doc](https://valkey.io/commands/sentinel-simulate-failure) | Simulates failover scenarios. | 1.0.0 | 3.2.0 |
+| SENTINEL SLAVES | [doc](https://valkey.io/commands/sentinel-slaves) | Returns a list of the monitored replicas. | 1.0.0 | 2.8.0 |
+| SET | [doc](https://valkey.io/commands/set) | Sets the string value of a key, ignoring its type. The key is created if it doesn't exist. | 1.0.0 | 1.0.0 |
+| SETBIT | [doc](https://valkey.io/commands/setbit) | Sets or clears the bit at offset of the string value. Creates the key if it doesn't exist. | 1.0.0 | 2.2.0 |
+| SETEX | [doc](https://valkey.io/commands/setex) | Sets the string value and expiration time of a key. Creates the key if it doesn't exist. | 1.0.0 | 2.0.0 |
+| SETNX | [doc](https://valkey.io/commands/setnx) | Set the string value of a key only when the key doesn't exist. | 1.0.0 | 1.0.0 |
+| SETRANGE | [doc](https://valkey.io/commands/setrange) | Overwrites a part of a string value with another by an offset. Creates the key if it doesn't exist. | 1.0.0 | 2.2.0 |
+| SHUTDOWN | [doc](https://valkey.io/commands/shutdown) | Synchronously saves the database(s) to disk and shuts down the server. | 1.0.0 | 1.0.0 |
+| SINTER | [doc](https://valkey.io/commands/sinter) | Returns the intersect of multiple sets. | 1.0.0 | 1.0.0 |
+| SINTERCARD | [doc](https://valkey.io/commands/sintercard) | Returns the number of members of the intersect of multiple sets. | 1.0.0 | 7.0.0 |
+| SINTERSTORE | [doc](https://valkey.io/commands/sinterstore) | Stores the intersect of multiple sets in a key. | 1.0.0 | 1.0.0 |
+| SISMEMBER | [doc](https://valkey.io/commands/sismember) | Determines whether a member belongs to a set. | 1.0.0 | 1.0.0 |
+| SLAVEOF | [doc](https://valkey.io/commands/slaveof) | Sets a server as a replica of another, or promotes it to being a primary. | 1.0.0 | 1.0.0 |
+| SLOWLOG | [doc](https://valkey.io/commands/slowlog) | A container for slow log commands. | 1.0.0 | 2.2.12 |
+| SLOWLOG GET | [doc](https://valkey.io/commands/slowlog-get) | Returns the slow log's entries. | 1.0.0 | 2.2.12 |
+| SLOWLOG HELP | [doc](https://valkey.io/commands/slowlog-help) | Show helpful text about the different subcommands | 1.0.0 | 6.2.0 |
+| SLOWLOG LEN | [doc](https://valkey.io/commands/slowlog-len) | Returns the number of entries in the slow log. | 1.0.0 | 2.2.12 |
+| SLOWLOG RESET | [doc](https://valkey.io/commands/slowlog-reset) | Clears all entries from the slow log. | 1.0.0 | 2.2.12 |
+| SMEMBERS | [doc](https://valkey.io/commands/smembers) | Returns all members of a set. | 1.0.0 | 1.0.0 |
+| SMISMEMBER | [doc](https://valkey.io/commands/smismember) | Determines whether multiple members belong to a set. | 1.0.0 | 6.2.0 |
+| SMOVE | [doc](https://valkey.io/commands/smove) | Moves a member from one set to another. | 1.0.0 | 1.0.0 |
+| SORT | [doc](https://valkey.io/commands/sort) | Sorts the elements in a list, a set, or a sorted set, optionally storing the result. | 1.0.0 | 1.0.0 |
+| SORT_RO | [doc](https://valkey.io/commands/sort_ro) | Returns the sorted elements of a list, a set, or a sorted set. | 1.0.0 | 7.0.0 |
+| SPOP | [doc](https://valkey.io/commands/spop) | Returns one or more random members from a set after removing them. Deletes the set if the last member was popped. | 1.0.0 | 1.0.0 |
+| SPUBLISH | [doc](https://valkey.io/commands/spublish) | Post a message to a shard channel | 1.0.0 | 7.0.0 |
+| SRANDMEMBER | [doc](https://valkey.io/commands/srandmember) | Get one or multiple random members from a set | 1.0.0 | 1.0.0 |
+| SREM | [doc](https://valkey.io/commands/srem) | Removes one or more members from a set. Deletes the set if the last member was removed. | 1.0.0 | 1.0.0 |
+| SSCAN | [doc](https://valkey.io/commands/sscan) | Iterates over members of a set. | 1.0.0 | 2.8.0 |
+| SSUBSCRIBE | [doc](https://valkey.io/commands/ssubscribe) | Listens for messages published to shard channels. | 1.0.0 | 7.0.0 |
+| STRLEN | [doc](https://valkey.io/commands/strlen) | Returns the length of a string value. | 1.0.0 | 2.2.0 |
+| SUBSCRIBE | [doc](https://valkey.io/commands/subscribe) | Listens for messages published to channels. | 1.0.0 | 2.0.0 |
+| SUBSTR | [doc](https://valkey.io/commands/substr) | Returns a substring from a string value. | 1.0.0 | 1.0.0 |
+| SUNION | [doc](https://valkey.io/commands/sunion) | Returns the union of multiple sets. | 1.0.0 | 1.0.0 |
+| SUNIONSTORE | [doc](https://valkey.io/commands/sunionstore) | Stores the union of multiple sets in a key. | 1.0.0 | 1.0.0 |
+| SUNSUBSCRIBE | [doc](https://valkey.io/commands/sunsubscribe) | Stops listening to messages posted to shard channels. | 1.0.0 | 7.0.0 |
+| SWAPDB | [doc](https://valkey.io/commands/swapdb) | Swaps two databases. | 1.0.0 | 4.0.0 |
+| SYNC | [doc](https://valkey.io/commands/sync) | An internal command used in replication. | 1.0.0 | 1.0.0 |
+| TIME | [doc](https://valkey.io/commands/time) | Returns the server time. | 1.0.0 | 2.6.0 |
+| TOUCH | [doc](https://valkey.io/commands/touch) | Returns the number of existing keys out of those specified after updating the time they were last accessed. | 1.0.0 | 3.2.1 |
+| TTL | [doc](https://valkey.io/commands/ttl) | Returns the expiration time in seconds of a key. | 1.0.0 | 1.0.0 |
+| TYPE | [doc](https://valkey.io/commands/type) | Determines the type of value stored at a key. | 1.0.0 | 1.0.0 |
+| UNLINK | [doc](https://valkey.io/commands/unlink) | Asynchronously deletes one or more keys. | 1.0.0 | 4.0.0 |
+| UNSUBSCRIBE | [doc](https://valkey.io/commands/unsubscribe) | Stops listening to messages posted to channels. | 1.0.0 | 2.0.0 |
+| UNWATCH | [doc](https://valkey.io/commands/unwatch) | Forgets about watched keys of a transaction. | 1.0.0 | 2.2.0 |
+| WAIT | [doc](https://valkey.io/commands/wait) | Blocks until the asynchronous replication of all preceding write commands sent by the connection is completed. | 1.0.0 | 3.0.0 |
+| WAITAOF | [doc](https://valkey.io/commands/waitaof) | Blocks until all of the preceding write commands sent by the connection are written to the append-only file of the primary and/or replicas. | 1.0.0 | 7.2.0 |
+| WATCH | [doc](https://valkey.io/commands/watch) | Monitors changes to keys to determine the execution of a transaction. | 1.0.0 | 2.2.0 |
+| XACK | [doc](https://valkey.io/commands/xack) | Returns the number of messages that were successfully acknowledged by the consumer group member of a stream. | 1.0.0 | 5.0.0 |
+| XADD | [doc](https://valkey.io/commands/xadd) | Appends a new message to a stream. Creates the key if it doesn't exist. | 1.0.0 | 5.0.0 |
+| XAUTOCLAIM | [doc](https://valkey.io/commands/xautoclaim) | Changes, or acquires, ownership of messages in a consumer group, as if the messages were delivered to as consumer group member. | 1.0.0 | 6.2.0 |
+| XCLAIM | [doc](https://valkey.io/commands/xclaim) | Changes, or acquires, ownership of a message in a consumer group, as if the message was delivered a consumer group member. | 1.0.0 | 5.0.0 |
+| XDEL | [doc](https://valkey.io/commands/xdel) | Returns the number of messages after removing them from a stream. | 1.0.0 | 5.0.0 |
+| XGROUP | [doc](https://valkey.io/commands/xgroup) | A container for consumer groups commands. | 1.0.0 | 5.0.0 |
+| XGROUP CREATE | [doc](https://valkey.io/commands/xgroup-create) | Creates a consumer group. | 1.0.0 | 5.0.0 |
+| XGROUP CREATECONSUMER | [doc](https://valkey.io/commands/xgroup-createconsumer) | Creates a consumer in a consumer group. | 1.0.0 | 6.2.0 |
+| XGROUP DELCONSUMER | [doc](https://valkey.io/commands/xgroup-delconsumer) | Deletes a consumer from a consumer group. | 1.0.0 | 5.0.0 |
+| XGROUP DESTROY | [doc](https://valkey.io/commands/xgroup-destroy) | Destroys a consumer group. | 1.0.0 | 5.0.0 |
+| XGROUP HELP | [doc](https://valkey.io/commands/xgroup-help) | Returns helpful text about the different subcommands. | 1.0.0 | 5.0.0 |
+| XGROUP SETID | [doc](https://valkey.io/commands/xgroup-setid) | Sets the last-delivered ID of a consumer group. | 1.0.0 | 5.0.0 |
+| XINFO | [doc](https://valkey.io/commands/xinfo) | A container for stream introspection commands. | 1.0.0 | 5.0.0 |
+| XINFO CONSUMERS | [doc](https://valkey.io/commands/xinfo-consumers) | Returns a list of the consumers in a consumer group. | 1.0.0 | 5.0.0 |
+| XINFO GROUPS | [doc](https://valkey.io/commands/xinfo-groups) | Returns a list of the consumer groups of a stream. | 1.0.0 | 5.0.0 |
+| XINFO HELP | [doc](https://valkey.io/commands/xinfo-help) | Returns helpful text about the different subcommands. | 1.0.0 | 5.0.0 |
+| XINFO STREAM | [doc](https://valkey.io/commands/xinfo-stream) | Returns information about a stream. | 1.0.0 | 5.0.0 |
+| XLEN | [doc](https://valkey.io/commands/xlen) | Return the number of messages in a stream. | 1.0.0 | 5.0.0 |
+| XPENDING | [doc](https://valkey.io/commands/xpending) | Returns the information and entries from a stream consumer group's pending entries list. | 1.0.0 | 5.0.0 |
+| XRANGE | [doc](https://valkey.io/commands/xrange) | Returns the messages from a stream within a range of IDs. | 1.0.0 | 5.0.0 |
+| XREAD | [doc](https://valkey.io/commands/xread) | Returns messages from multiple streams with IDs greater than the ones requested. Blocks until a message is available otherwise. | 1.0.0 | 5.0.0 |
+| XREADGROUP | [doc](https://valkey.io/commands/xreadgroup) | Returns new or historical messages from a stream for a consumer in a group. Blocks until a message is available otherwise. | 1.0.0 | 5.0.0 |
+| XREVRANGE | [doc](https://valkey.io/commands/xrevrange) | Returns the messages from a stream within a range of IDs in reverse order. | 1.0.0 | 5.0.0 |
+| XSETID | [doc](https://valkey.io/commands/xsetid) | An internal command for replicating stream values. | 1.0.0 | 5.0.0 |
+| XTRIM | [doc](https://valkey.io/commands/xtrim) | Deletes messages from the beginning of a stream. | 1.0.0 | 5.0.0 |
+| ZADD | [doc](https://valkey.io/commands/zadd) | Adds one or more members to a sorted set, or updates their scores. Creates the key if it doesn't exist. | 1.0.0 | 1.2.0 |
+| ZCARD | [doc](https://valkey.io/commands/zcard) | Returns the number of members in a sorted set. | 1.0.0 | 1.2.0 |
+| ZCOUNT | [doc](https://valkey.io/commands/zcount) | Returns the count of members in a sorted set that have scores within a range. | 1.0.0 | 2.0.0 |
+| ZDIFF | [doc](https://valkey.io/commands/zdiff) | Returns the difference between multiple sorted sets. | 1.0.0 | 6.2.0 |
+| ZDIFFSTORE | [doc](https://valkey.io/commands/zdiffstore) | Stores the difference of multiple sorted sets in a key. | 1.0.0 | 6.2.0 |
+| ZINCRBY | [doc](https://valkey.io/commands/zincrby) | Increments the score of a member in a sorted set. | 1.0.0 | 1.2.0 |
+| ZINTER | [doc](https://valkey.io/commands/zinter) | Returns the intersect of multiple sorted sets. | 1.0.0 | 6.2.0 |
+| ZINTERCARD | [doc](https://valkey.io/commands/zintercard) | Returns the number of members of the intersect of multiple sorted sets. | 1.0.0 | 7.0.0 |
+| ZINTERSTORE | [doc](https://valkey.io/commands/zinterstore) | Stores the intersect of multiple sorted sets in a key. | 1.0.0 | 2.0.0 |
+| ZLEXCOUNT | [doc](https://valkey.io/commands/zlexcount) | Returns the number of members in a sorted set within a lexicographical range. | 1.0.0 | 2.8.9 |
+| ZMPOP | [doc](https://valkey.io/commands/zmpop) | Returns the highest- or lowest-scoring members from one or more sorted sets after removing them. Deletes the sorted set if the last member was popped. | 1.0.0 | 7.0.0 |
+| ZMSCORE | [doc](https://valkey.io/commands/zmscore) | Returns the score of one or more members in a sorted set. | 1.0.0 | 6.2.0 |
+| ZPOPMAX | [doc](https://valkey.io/commands/zpopmax) | Returns the highest-scoring members from a sorted set after removing them. Deletes the sorted set if the last member was popped. | 1.0.0 | 5.0.0 |
+| ZPOPMIN | [doc](https://valkey.io/commands/zpopmin) | Returns the lowest-scoring members from a sorted set after removing them. Deletes the sorted set if the last member was popped. | 1.0.0 | 5.0.0 |
+| ZRANDMEMBER | [doc](https://valkey.io/commands/zrandmember) | Returns one or more random members from a sorted set. | 1.0.0 | 6.2.0 |
+| ZRANGE | [doc](https://valkey.io/commands/zrange) | Returns members in a sorted set within a range of indexes. | 1.0.0 | 1.2.0 |
+| ZRANGEBYLEX | [doc](https://valkey.io/commands/zrangebylex) | Returns members in a sorted set within a lexicographical range. | 1.0.0 | 2.8.9 |
+| ZRANGEBYSCORE | [doc](https://valkey.io/commands/zrangebyscore) | Returns members in a sorted set within a range of scores. | 1.0.0 | 1.0.5 |
+| ZRANGESTORE | [doc](https://valkey.io/commands/zrangestore) | Stores a range of members from sorted set in a key. | 1.0.0 | 6.2.0 |
+| ZRANK | [doc](https://valkey.io/commands/zrank) | Returns the index of a member in a sorted set ordered by ascending scores. | 1.0.0 | 2.0.0 |
+| ZREM | [doc](https://valkey.io/commands/zrem) | Removes one or more members from a sorted set. Deletes the sorted set if all members were removed. | 1.0.0 | 1.2.0 |
+| ZREMRANGEBYLEX | [doc](https://valkey.io/commands/zremrangebylex) | Removes members in a sorted set within a lexicographical range. Deletes the sorted set if all members were removed. | 1.0.0 | 2.8.9 |
+| ZREMRANGEBYRANK | [doc](https://valkey.io/commands/zremrangebyrank) | Removes members in a sorted set within a range of indexes. Deletes the sorted set if all members were removed. | 1.0.0 | 2.0.0 |
+| ZREMRANGEBYSCORE | [doc](https://valkey.io/commands/zremrangebyscore) | Removes members in a sorted set within a range of scores. Deletes the sorted set if all members were removed. | 1.0.0 | 1.2.0 |
+| ZREVRANGE | [doc](https://valkey.io/commands/zrevrange) | Returns members in a sorted set within a range of indexes in reverse order. | 1.0.0 | 1.2.0 |
+| ZREVRANGEBYLEX | [doc](https://valkey.io/commands/zrevrangebylex) | Returns members in a sorted set within a lexicographical range in reverse order. | 1.0.0 | 2.8.9 |
+| ZREVRANGEBYSCORE | [doc](https://valkey.io/commands/zrevrangebyscore) | Returns members in a sorted set within a range of scores in reverse order. | 1.0.0 | 2.2.0 |
+| ZREVRANK | [doc](https://valkey.io/commands/zrevrank) | Returns the index of a member in a sorted set ordered by descending scores. | 1.0.0 | 2.0.0 |
+| ZSCAN | [doc](https://valkey.io/commands/zscan) | Iterates over members and scores of a sorted set. | 1.0.0 | 2.8.0 |
+| ZSCORE | [doc](https://valkey.io/commands/zscore) | Returns the score of a member in a sorted set. | 1.0.0 | 1.2.0 |
+| ZUNION | [doc](https://valkey.io/commands/zunion) | Returns the union of multiple sorted sets. | 1.0.0 | 6.2.0 |
+| ZUNIONSTORE | [doc](https://valkey.io/commands/zunionstore) | Stores the union of multiple sorted sets in a key. | 1.0.0 | 2.0.0 |

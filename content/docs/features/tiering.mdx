@@ -1,0 +1,261 @@
+---
+title: Multi Tiering
+description: Expand cache capacity onto disk with transparent key eviction and restoration
+---
+
+DiceDB's Multi Tiering is powered by the [Spill module](https://github.com/dicedb/dicedb-spill),
+transparently extends your cache capacity beyond RAM by persisting evicted keys to disk.
+Keys are automatically restored when accessed, making disk-backed storage
+completely transparent to applications.
+
+The Spill module integrates with DiceDB to provide tiered
+storage using RocksDB as the disk-backed persistence layer. When
+keys are evicted from memory—either manually using
+the [`EVICT`](/commands/evict) command or automatically through
+eviction policies—they are transparently moved to RocksDB.
+
+These keys remain logically accessible and are
+automatically restored to memory when accessed.
+
+### Key Features
+
+- Transparent Persistence: Evicted keys are automatically persisted to RocksDB with zero application changes
+- Transparent Restoration: Keys are transparently restored on cache misses
+- TTL Preservation: Time-to-live values are fully preserved across evictions and restores
+- Minimal Overhead: Only 8 bytes of metadata overhead per key (on-disk) and 0 no overhead in-memory
+- Cleanup: Background thread periodically removes expired keys from disk
+- All Data Types: Supports strings, lists, sets, hashes, sorted sets, and more
+
+## How It Works
+
+### Eviction Flow
+
+When memory pressure occurs or when you explicitly evict keys:
+
+1. Keys are serialized with their metadata (TTL, data type, etc.)
+2. Data is written to RocksDB with only 8 bytes of overhead per key
+3. Keys are removed from memory
+4. Keys remain logically accessible through the same commands
+
+### Restoration Flow
+
+When you access an evicted key:
+
+1. DiceDB automatically checks RocksDB if the key is not in memory
+2. If found and not expired, the key is restored to memory
+3. The key is removed from RocksDB after successful restoration
+4. The operation proceeds as if the key was always in memory
+
+### Expiration Handling
+
+The Spill module handles key expiration through multiple mechanisms:
+
+1. On-Access Cleanup: Expired keys are detected and removed during restore attempts
+2. Background Cleanup: A background thread periodically scans RocksDB to remove expired keys
+3. Manual Cleanup: Use the [`SPILL.CLEANUP`](/commands/spill-cleanup) command for immediate cleanup
+
+## Getting Started
+
+The quickest and easiest way to see spill in action is by using the official
+Docker image of DiceDB which comes with everything pre-configured.
+
+```bash
+docker run \
+  --name dicedb-1 -p 6379:6379 -v $(pwd)/data:/data/ \
+  dicedb:latest
+```
+
+This command starts a DiceDB container with the `spill` module
+already enabled. By default, the spill module uses RocksDB and
+is configured with a maximum memory limit of 250MB.
+
+### Custom Configuration
+
+```bash
+docker run \
+    --name dicedb-1 -p 6379:6379 -v $(pwd)/data:/data/ \
+    dicedb:latest \
+    dicedb-server \
+    --protected-mode no \
+    --loadmodule /usr/local/lib/lib-spill.so path /data/spill/ max-memory 262144000 cleanup-interval 200
+```
+
+## Configuration
+
+| Parameter | Required | Default | Purpose |
+|-----------|----------|---------|---------|
+| `path` | Yes | - | RocksDB data directory path |
+| `max-memory` | No | 256MB | Maximum memory budget for RocksDB. Minimum: 20MB |
+| `cleanup-interval` | No | 300 seconds | Interval between automatic cleanup runs for expired keys. Set to 0 to disable periodic cleanup |
+
+### Parameter Details
+
+#### `path`
+
+The directory where RocksDB will store evicted keys on disk. This path must
+be writable by the DiceDB process.
+
+```bash
+--loadmodule ./lib-spill.so path /var/lib/dicedb/spill
+```
+
+#### `max-memory`
+
+Maximum memory allocated for RocksDB internal structures
+including block cache and write buffers. This controls the RAM
+footprint of the persistence layer, not the disk storage size.
+
+- Minimum: 20971520 (20MB)
+- Default: 268435456 (256MB)
+
+```bash
+--loadmodule ./lib-spill.so \
+    path /data/spill \
+    max-memory 536870912  # 512MB
+```
+
+#### `cleanup-interval`
+
+Interval in seconds between automatic background cleanup
+runs that remove expired keys from RocksDB. Set to 0 to
+disable periodic cleanup (manual cleanup via `SPILL.CLEANUP` will still work).
+
+```bash
+--loadmodule ./lib-spill.so \
+    path /data/spill \
+    cleanup-interval 600  # 10 minutes
+```
+
+## Usage Examples
+
+### Basic Eviction and Restoration
+
+```bash
+# Set a key
+127.0.0.1:7379> SET mykey "hello world"
+OK
+
+# Evict the key to disk
+# Ideally this would happen due to memory pressure
+# But DiceDB has EVICT command that evicts a key
+127.0.0.1:7379> EVICT mykey
+OK
+
+# Key is no longer in memory
+127.0.0.1:7379> KEYS *
+(empty array)
+
+# Accessing the key automatically restores it
+127.0.0.1:7379> GET mykey
+"hello world"
+
+# Key is now back in memory
+127.0.0.1:7379> KEYS *
+1) "mykey"
+```
+
+### Manual Restoration
+
+```bash
+# Restore a key without accessing its value
+127.0.0.1:7379> SPILL.RESTORE mykey
+OK
+```
+
+### Manual Cleanup
+
+```bash
+# Set keys with short TTL
+127.0.0.1:7379> SET temp1 "value" EX 10
+OK
+127.0.0.1:7379> SET temp2 "value" EX 10
+OK
+
+# Evict to disk
+127.0.0.1:7379> EVICT temp1 temp2
+OK
+
+# Wait for expiration, then manually clean up
+127.0.0.1:7379> SPILL.CLEANUP
+1) "num_keys_scanned"
+2) (integer) 2
+3) "num_keys_cleaned"
+4) (integer) 2
+```
+
+## Monitoring and Statistics
+
+Spill statistics are integrated into the standard
+`INFO` command. Use `INFO spill` to view metrics:
+
+```bash
+127.0.0.1:7379> INFO spill
+# stats
+spill_num_keys_stored:1523
+spill_total_keys_written:2347
+spill_total_keys_restored:847
+spill_total_keys_cleaned:23
+spill_last_num_keys_cleaned:5
+spill_last_cleanup_at:1707512345
+spill_total_bytes_written:45678901
+spill_total_bytes_read:23456789
+
+# config
+spill_path:/var/lib/dicedb/spill
+spill_max_memory_bytes:268435456
+spill_cleanup_interval_seconds:300
+```
+
+### Observability
+
+Module-level observability can be accessed via the `INFO SPILL`
+command. The following stats are captured and exported.
+
+| Metric | Description |
+|--------|-------------|
+| `num_keys_stored` | Current number of keys in RocksDB (approximate) |
+| `total_keys_written` | Total write operations to RocksDB since restart (includes overwrites) |
+| `total_keys_restored` | Total keys restored from RocksDB since restart |
+| `total_keys_cleaned` | Total keys removed due to expiration (includes restore-time and cleanup operations) |
+| `last_num_keys_cleaned` | Keys cleaned in the most recent cleanup job |
+| `last_cleanup_at` | Unix timestamp of last cleanup (0 if never run) |
+| `total_bytes_written` | Total bytes written to RocksDB (includes metadata) |
+| `total_bytes_read` | Total bytes read from RocksDB (includes metadata) |
+
+## Best Practices
+
+1. The default 300-second cleanup interval works well for most workloads. Adjust based on:
+   - Key expiration patterns
+   - Disk space constraints
+   - Acceptable latency for disk space reclamation
+
+2. Set `max-memory` based on available RAM:
+   - Keep it under 10-20% of total available RAM
+   - Minimum of 20MB required
+
+3. Manual Cleanup: Use `SPILL.CLEANUP` sparingly:
+   - It's a blocking operation that can impact performance
+   - Rely on automatic cleanup in most cases
+   - Use only when immediate disk space reclamation is needed
+
+4. Monitoring: Regularly check `INFO spill` to:
+   - Track restoration patterns
+   - Identify cleanup efficiency
+
+## Performance Considerations
+
+- First access after eviction incurs disk I/O latency (benchmarks will be published soon)
+- Expired keys are cleaned lazily to minimize overhead
+- `SPILL.CLEANUP` runs on the main thread—use automatic cleanup instead
+
+## Limitations
+
+- Manual cleanup (`SPILL.CLEANUP`) is a blocking operation
+- Restoration from disk is slower than memory access
+- RocksDB requires a minimum of 20MB memory allocation
+
+## Additional Resources
+
+- [Spill Module GitHub Repository](https://github.com/dicedb/dicedb-spill)
+- [RocksDB Documentation](https://rocksdb.org/)
+- [DiceDB Spill Guide](https://github.com/dicedb/dicedb-spill)
