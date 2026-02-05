@@ -1,0 +1,157 @@
+---
+title: Build from Source
+description: Build and install DiceDB from source code
+icon: Code
+---
+
+DiceDB supports Linux, macOS, OpenBSD, NetBSD, and FreeBSD. Building
+from source gives you the latest features and allows you to
+customize the build options.
+
+## Prerequisites
+
+Before building DiceDB, ensure you have:
+
+- A C compiler (GCC or Clang)
+- Make
+- Git (for cloning the repository)
+
+## Clone
+
+DiceDB uses [Git Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
+and hence while cloning the repository make sure you pass the `--recursive` flag
+
+```bash
+git clone git@github.com/dicedb/dice --recursive
+```
+
+## Building DiceDB
+
+### Basic Compilation
+
+The simplest way to build DiceDB is:
+
+```bash
+make
+```
+
+This will compile DiceDB with default settings for your platform.
+
+### Build Options
+
+DiceDB supports several optional build features:
+
+#### TLS Support
+
+To enable Transport Layer Security:
+
+```bash
+# Integrated TLS support
+make BUILD_TLS=yes
+
+# Module-based TLS
+make BUILD_TLS=module
+```
+
+#### RDMA Support (Experimental)
+
+For RDMA support:
+
+```bash
+# Integrated RDMA
+make BUILD_RDMA=yes
+
+# Module-based RDMA
+make BUILD_RDMA=module
+```
+
+#### Systemd Integration
+
+To enable systemd support on Linux:
+
+```bash
+make USE_SYSTEMD=yes
+```
+
+#### Fast Float Optimization
+
+For optimized performance with sorted sets:
+
+```bash
+make USE_FAST_FLOAT=yes
+```
+
+#### 32-bit Build
+
+To build a 32-bit binary:
+
+```bash
+make 32bit
+```
+
+#### Custom Binary Suffix
+
+To append a custom suffix to program names:
+
+```bash
+make PROG_SUFFIX="-custom"
+```
+
+## Testing
+
+After compilation, validate your build:
+
+```bash
+# Run all tests
+make test
+
+# Run specific test suites
+make test-unit      # Unit tests
+make test-modules   # Module tests
+make test-cluster   # Cluster tests
+```
+
+## Installation
+
+Install the compiled binaries to `/usr/local/bin`:
+
+```bash
+make install
+```
+
+By default, this installs to `/usr/local/bin`. You can customize the installation prefix:
+
+```bash
+make PREFIX=/opt/dicedb install
+```
+
+## Production Setup (Linux)
+
+For production deployments on Ubuntu/Debian systems, you can use the provided
+utility script to configure init scripts and configuration files:
+
+```bash
+cd utils
+./install_server.sh
+```
+
+This script will:
+
+- Create the necessary directories
+- Configure the init script
+- Set up the default configuration
+- Start the DiceDB service
+
+## Verifying the Installation
+
+After installation, verify that DiceDB is working:
+
+```bash
+# Start the server
+dicedb-server
+
+# In another terminal, connect with the CLI
+dicedb-cli ping
+```
+
+You should receive a `PONG` response.

@@ -1,0 +1,67 @@
+---
+title: EVICT
+description: "Evicts the specified keys from memory."
+synopsis: "Evicts the specified keys from in-memory tier and pushes them to disk if Spill is configured."
+since: ""
+dicedb_since: "1.0.0"
+acl_categories:
+  - "@keyspace"
+  - "@write"
+  - "@fast"
+---
+
+## Syntax
+
+```
+EVICT key [key ...]
+```
+
+## Parameters
+
+| Parameter | Description                          | Type   | Required |
+| --------- | ------------------------------------ | ------ | -------- |
+| `key`     | One or more keys to evict from memory | String | Yes      |
+
+## Return Value
+
+| Condition                           | Return Value                                        |
+| ----------------------------------- | --------------------------------------------------- |
+| Keys evicted successfully           | `OK`                                                |
+| Key does not exist                  | Key is ignored, no error is raised                  |
+
+## Behaviour
+
+When `EVICT` is called, DiceDB removes the specified keys from its in-memory store and
+delegates them to the configured storage backend (e.g., [dicedb-spill](https://github.com/dicedb/dicedb-spill)).
+This is useful for tiered storage setups where you want to proactively move infrequently
+accessed keys out of memory to free up space.
+
+If a key does not exist, it is silently ignored. The command accepts multiple keys
+in a single call for batch eviction.
+
+## Examples
+
+Evict a single key:
+
+```bash
+127.0.0.1:7379> SET mykey "hello"
+OK
+127.0.0.1:7379> EVICT mykey
+OK
+```
+
+Evict multiple keys:
+
+```bash
+127.0.0.1:7379> SET key1 "a"
+OK
+127.0.0.1:7379> SET key2 "b"
+OK
+127.0.0.1:7379> EVICT key1 key2
+OK
+```
+
+## Notes
+
+- This command is specific to DiceDB and is not available in Valkey or Redis.
+- The `EVICT` command works in conjunction with the `PREMISS` and `PREEVICTION` hooks, which enable tiered storage support through [dicedb-spill](https://github.com/dicedb/dicedb-spill).

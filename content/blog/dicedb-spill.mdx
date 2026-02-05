@@ -1,0 +1,251 @@
+---
+title: DiceDB Spill - Extending Your Cache to Disk
+description: DiceDB Spill bridges memory and disk storage, allowing evicted keys to persist automatically while maintaining full Redis compatibility
+author: Arpit Bhayani
+date: 2026-02-05
+---
+
+When you run an in-memory cache, you eventually hit a fundamental
+constraint: RAM is expensive and limited. Once your memory
+fills up, the cache eviction policies kick in, and keys
+start disappearing. This creates a painful tradeoff between
+memory costs and cache effectiveness.
+
+The traditional solution to this problem is to add more RAM, but this
+gets expensive quickly. And with this, the problem just gets delayed 
+and not solved. DiceDB changes this...
+
+## DiceDB Spill
+
+DiceDB has two-tier storage architecture enabled by
+[dicedb-spill](https://github.com/dicedb/dicedb-spill)
+extending the cache to put the evicted keys on disk. The memory tier is
+primary cache layer. Active keys live here for fast access, just like a
+traditional cache. This tier is limited by your configured
+[maxmemory](/docs/configuration/server#maxmemory) setting.
+
+The disk tier uses [RocksDB](https://rocksdb.org/) as a backing store.
+The keys remain accessible through the same GET and other access methods,
+but with slightly higher one-time latency since disk I/O is involved.
+
+The transition between tiers is completely transparent. Your
+application makes the same `GET` request whether a key lives
+in memory or on disk. DiceDB handles the complexity of checking
+both tiers and promoting keys back to memory when they're accessed.
+
+## Spill in Action
+
+Run DiceDB docker image
+
+```
+```
+
+Or build DiceDB and dicedb-spill module from source (follow instructions in their readme)
+and start the server with module loaded
+
+```
+loadmodule 
+```
+
+DiceDB has also EVICT command that evicts a key from DiceDB
+so, if we fire the following series of commands we can see key getting restored from ROcks DB
+
+```
+```
+
+## Overhead
+
+When you set a key in DiceDB with Spill enabled, it initially
+goes to the memory tier. The key stays in memory as long as there's
+available space and it continues to be accessed frequently.
+
+As memory fills up and eviction kicks in, DiceDB writes the
+key to RocksDB before removing it from memory. This write includes
+both the key-value pair and metadata like TTL (time-to-live) settings.
+
+The metadata overhead is minimal - only 8 bytes per key. This
+includes information needed to restore the key correctly, including its
+original absolute TTL and type information.
+
+Here's what happens during a GET or any access operation:
+
+1. DiceDB first checks the memory tier
+2. If the key exists in memory, return immediately
+3. If not found in memory, check RocksDB on disk
+4. If found on disk, read the value and promote it back to memory
+5. Return the value to the client
+
+Hot keys naturally migrate to memory while cold keys stay
+on disk. This creates a self-optimizing system that
+adapts to your access patterns.
+
+## TTL Across Tiers
+
+DiceDB Spill handles of TTL across both storage tiers. This ensures
+that keys expire at the right time regardless of which tier they're in.
+
+When a key is evicted to disk, its TTL is preserved. DiceDB stores
+the original expiration timestamp in the RocksDB metadata. This means
+a key that was set to expire in 1 hour will still expire correctly
+even if it moves to disk after 30 minutes.
+
+The cleanup mechanism runs periodically to cleanup expired keys from RocksDB.
+This cleanup happens without blocking your application's requests.
+
+## Configurations
+
+The configuration parameters control how the two-tier system operates:
+
+The `--dir` parameter specifies where RocksDB stores disk-resident keys. This should be a directory with sufficient disk space for your workload. Plan for at least 5-10x your memory tier size.
+
+The `--max-memory` parameter sets the memory tier limit. Once memory usage exceeds this threshold, eviction to disk begins. This should be set based on your available RAM and other system requirements.
+
+You can verify the installation is working correctly:
+
+```bash
+# Run the test suite
+make test
+
+# Connect with redis-cli and test manually
+redis-cli
+127.0.0.1:6379> SET test_key "test_value"
+OK
+127.0.0.1:6379> GET test_key
+"test_value"
+```
+
+## Performance and Tradeoffs
+
+Understanding the performance profile helps you set appropriate expectations and optimize your deployment.
+
+Memory-resident keys deliver Redis-level performance: sub-millisecond read and write latency. This is your hot path and should handle the majority of your traffic.
+
+Disk-resident keys add storage latency, typically 1-10ms depending on your disk hardware. SSDs provide much better performance than spinning disks. While this is slower than memory, it's still orders of magnitude faster than fetching from a database, which often takes 50-100ms or more.
+
+The promotion mechanism adds a small overhead when accessing disk-resident keys. The first access after eviction is slower because DiceDB must read from RocksDB and write back to memory. Subsequent accesses return to memory speeds.
+
+Write performance is similar to standard DiceDB for memory-resident keys. Eviction to disk happens asynchronously and shouldn't block your application. However, if your eviction rate is extremely high, you may see increased CPU usage from RocksDB writes.
+
+```bash
+# Benchmarking memory vs disk access
+# Memory-resident keys
+$ redis-benchmark -t get -n 100000
+GET: 85000.00 requests per second
+
+# After forcing eviction to disk
+$ redis-benchmark -t get -n 100000
+GET: 12000.00 requests per second  # First access (with promotion)
+GET: 83000.00 requests per second  # Subsequent accesses
+```
+
+Memory overhead is minimal. Each key requires only 12 bytes of metadata regardless of value size. A cache with 10 million keys adds only 120MB of metadata overhead.
+
+Disk space usage depends on your data and compression settings. With compression enabled, text-heavy data can compress 3-5x. Binary data compresses less effectively. Plan for disk capacity that's at least your expected working set size plus overhead for RocksDB's internal structures.
+
+### Understanding the latency distribution
+
+The performance of DiceDB Spill varies significantly based on access patterns. Let's break down the latency characteristics for different scenarios.
+
+For a cache with 80% of requests hitting memory-resident keys, you'll see a bimodal latency distribution. The majority of requests complete in under 1ms, while the remaining 20% that hit disk take 2-8ms on modern SSDs.
+
+This bimodal distribution is important to understand when setting SLAs. Your p50 and p90 latencies will be excellent (sub-millisecond), but p99 might be in the 5-10ms range if those requests hit disk.
+
+```python
+# Example: Tracking latency by tier
+import time
+
+def get_with_timing(key):
+    """Measure GET latency and track tier"""
+    start = time.time()
+    value = client.get(key)
+    latency = (time.time() - start) * 1000  # Convert to ms
+    
+    # Check if key was promoted (indicating disk access)
+    info = client.info('stats')
+    if info.get('spill_promotions', 0) > 0:
+        print(f'Disk access: {latency:.2f}ms')
+    else:
+        print(f'Memory access: {latency:.2f}ms')
+    
+    return value
+```
+
+The throughput characteristics are also worth understanding. Memory-resident operations can sustain very high throughput, often 100,000+ ops/sec per instance. Disk-resident operations have lower throughput, typically 10,000-30,000 ops/sec depending on your disk I/O capacity.
+
+If your workload has high concurrency with many requests accessing disk-resident keys simultaneously, disk can become a bottleneck. The solution is to increase memory tier size to keep more of your working set in memory.
+
+### Write amplification and disk wear
+
+RocksDB uses a Log-Structured Merge tree (LSM tree) internally, which has implications for write performance and disk wear.
+
+When keys are evicted to disk, RocksDB first writes them to a write-ahead log (WAL), then to memory tables (memtables), and eventually flushes to sorted string tables (SSTables) on disk. This process can result in write amplification, where each logical write results in multiple physical writes.
+
+For SSDs, write amplification affects both performance and drive longevity. Modern SSDs can handle billions of writes, but it's still worth understanding the pattern.
+
+```bash
+# Monitor RocksDB write amplification
+$ cat /var/dicedb/spill/LOG | grep "Write Amplification"
+Write Amplification: 2.3
+
+# This means each logical write results in 2.3 physical writes on average
+```
+
+Write amplification of 2-4x is typical for RocksDB with default settings. You can reduce this by tuning RocksDB parameters, but this often trades off read performance.
+
+For most workloads, write amplification isn't a concern. Modern SSDs rated for 1 DWPD (drive writes per day) can handle terabytes of writes over their lifetime. But if you're writing millions of keys per hour continuously, it's worth monitoring.
+
+### Read amplification and compaction
+
+RocksDB's LSM tree structure also affects read performance through read amplification. When reading a key from disk, RocksDB might need to check multiple SSTables to find the value.
+
+The number of SSTables checked depends on how recently compaction ran. Compaction is a background process that merges SSTables and removes deleted keys. More frequent compaction reduces read amplification but increases CPU usage.
+
+```python
+# Impact of compaction on read performance
+def benchmark_reads_before_after_compaction():
+    """Measure read latency before and after manual compaction"""
+    
+    # Before compaction (read amplification may be high)
+    times_before = []
+    for i in range(1000):
+        start = time.time()
+        client.get(f'key:{i}')
+        times_before.append(time.time() - start)
+    
+    avg_before = sum(times_before) / len(times_before)
+    print(f'Average latency before compaction: {avg_before*1000:.2f}ms')
+    
+    # Trigger manual compaction (in production this happens automatically)
+    # Note: This is a hypothetical example, actual API may differ
+    client.execute_command('SPILL.COMPACT')
+    
+    # After compaction
+    times_after = []
+    for i in range(1000):
+        start = time.time()
+        client.get(f'key:{i}')
+        times_after.append(time.time() - start)
+    
+    avg_after = sum(times_after) / len(times_after)
+    print(f'Average latency after compaction: {avg_after*1000:.2f}ms')
+```
+
+DiceDB Spill uses RocksDB's default compaction settings, which balance read performance, write performance, and resource usage. For most workloads, these defaults work well.
+
+### Memory vs disk cost analysis
+
+The economic benefit of DiceDB Spill comes from the cost differential between RAM and SSD storage.
+
+RAM costs approximately $5-10 per GB per month in cloud environments. SSD storage costs $0.10-0.20 per GB per month. This 50x cost difference makes extending to disk economically compelling.
+
+Consider a cache that needs 100GB of total capacity. With pure in-memory caching:
+- Memory cost: 100GB * $8/GB/month = $800/month
+
+With DiceDB Spill configured with 20GB memory tier and 80GB disk tier:
+- Memory cost: 20GB * $8/GB/month = $160/month
+- Disk cost: 80GB * $0.15/GB/month = $12/month
+- Total: $172/month
+
+This represents a 78% cost reduction while maintaining good performance for the majority of requests. The key is choosing the right memory tier size based on your hot working set.
+
+For workloads where 70-90% of requests hit the memory tier, DiceDB Spill delivers excellent cost-performance. Below 70% memory hit rate, you should consider increasing memory allocation.

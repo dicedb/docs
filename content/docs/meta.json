@@ -1,0 +1,10 @@
+{
+  "title": "Documentation",
+  "icon": "BookOpen",
+  "pages": [
+    "index",
+    "installation",
+    "commands",
+    "conf"
+  ]
+}

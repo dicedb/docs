@@ -1,0 +1,25 @@
+{
+    "valkey_bloom": {
+        "name": "valkey-bloom",
+        "repo": "https://github.com/valkey-io/valkey-bloom",
+        "description": "Module that allows users to use the bloom filter data type"
+    },
+
+    "valkey_search": {
+        "name": "valkey-search",
+        "repo": "https://github.com/valkey-io/valkey-search",
+        "description": "Module that provides a high-performance Vector Similarity Search engine optimized for AI-driven workloads"
+    },
+
+    "valkey_json": {
+        "name": "valkey-json",
+        "repo": "https://github.com/valkey-io/valkey-json",
+        "description": "Module that allows users to use the JSON data type"
+    },
+
+    "valkey_ldap": {
+        "name": "valkey-ldap",
+        "repo": "https://github.com/valkey-io/valkey-ldap",
+        "description": "Module that adds support for LDAP authentication"
+    }
+}

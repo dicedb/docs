@@ -1,13 +1,66 @@
 ---
-title: Hello World
-description: Your first document
+title: What is DiceDB?
+description: DiceDB is a fast, high-performance data structure server with tiered storage.
+icon: Home
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+DiceDB is a fork of [Valkey](https://valkey.io/) with additional capabilities
+that provides high-performance, Redis-compatible in-memory data structure server
+and data store. As Valkey itself is a fork of Redis, DiceDB maintains full
+compatibility with the Redis and Valkey ecosystem, including all SDKs, tools,
+and client libraries.
 
-## What is Next?
+## Architecture
 
-<Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
-</Cards>
+DiceDB is architecturally based on Valkey, which means you may encounter Valkey references in:
+
+- Server logs and metrics
+- Codebase and internal documentation
+
+For commands, behavior, and base configuration, you can refer
+to [Valkey](https://valkey.io) unless specific DiceDB
+features are noted.
+
+## Key Features
+
+### Disk Spilling
+
+DiceDB's offers [dicedb-spill](https://github.com/dicedb/dicedb-spill), which provides:
+
+- Automatic persistence of evicted keys to disk storage (RocksDB)
+- Transparent restoration of spilled keys on cache misses
+- Larger working sets within fixed memory budgets
+- Seamless operation without application-level changes
+
+This architecture allows you to work with datasets larger than
+available RAM while maintaining in-memory performance for hot data.
+
+## Compatibility
+
+DiceDB is fully compatible with:
+
+- Redis and Valkey clients and SDKs across all languages
+- Redis commands and data structures
+- Redis and Valkey tooling and ecosystem
+- Existing Redis and Valkey workflows and deployment patterns
+
+## Platform Support
+
+DiceDB runs on multiple platforms and architectures:
+
+- Operating Systems: Linux, macOS, OpenBSD, NetBSD, FreeBSD
+- Architectures: 32-bit and 64-bit, little-endian and big-endian systems
+
+## Use Cases
+
+- all the scenarios you were using Redis or Valkey
+- memory budget is constrained but working set is large
+- cost optimization is needed without sacrificing Redis compatibility
+
+## Legacy Version
+
+DiceDB originally started as a Golang-based storage engine
+focused on reactivity and high throughput. That implementation
+has been archived at [dice-legacy](https://github.com/dicedb/dice-legacy).
+Select features from the legacy engine are being gradually ported
+into the current Valkey-based codebase.
