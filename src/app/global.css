@@ -29,3 +29,216 @@
   --color-secondary: hsl(0, 0%, 14%);
   --color-secondary-foreground: hsl(0, 0%, 98%);
 }
+
+/* ── Top navigation styling ── */
+
+#nd-nav a,
+#nd-nav button {
+  font-size: 0.975rem;
+}
+
+/* ── Blog content styling ── */
+
+.blog-content {
+  color: color-mix(in oklab, var(--color-fd-foreground) 90%, transparent);
+  font-size: 1.075rem;
+  line-height: 1.85;
+  max-width: none;
+}
+
+/* Paragraphs */
+.blog-content p {
+  margin-top: 1.35em;
+  margin-bottom: 1.35em;
+}
+
+/* Headings */
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4 {
+  color: var(--color-fd-foreground);
+  scroll-margin-top: 7rem;
+}
+
+/* Prevent heading links from being yellow */
+.blog-content h1 a,
+.blog-content h2 a,
+.blog-content h3 a,
+.blog-content h4 a {
+  color: inherit;
+  text-decoration: none;
+  text-decoration-color: inherit;
+  font-weight: inherit;
+}
+
+.blog-content h1 {
+  font-size: 2em;
+  font-weight: 800;
+  margin-top: 2.25em;
+  margin-bottom: 0.8em;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+
+.blog-content h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--color-fd-border);
+}
+
+.blog-content h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin-top: 1.75em;
+  margin-bottom: 0.6em;
+  line-height: 1.4;
+}
+
+.blog-content h4 {
+  font-size: 1.1em;
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.45;
+}
+
+/* Remove top margin on first child */
+.blog-content > :first-child {
+  margin-top: 0;
+}
+
+/* Unordered lists */
+.blog-content ul {
+  list-style-type: disc;
+  padding-left: 1.75em;
+  margin-top: 1.15em;
+  margin-bottom: 1.15em;
+}
+
+.blog-content ul ul {
+  list-style-type: circle;
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+}
+
+/* Ordered lists */
+.blog-content ol {
+  list-style-type: decimal;
+  padding-left: 1.75em;
+  margin-top: 1.15em;
+  margin-bottom: 1.15em;
+}
+
+/* List items */
+.blog-content li {
+  margin-top: 0.45em;
+  margin-bottom: 0.45em;
+  padding-left: 0.4em;
+  line-height: 1.75;
+}
+
+.blog-content li::marker {
+  color: var(--color-fd-muted-foreground);
+}
+
+.blog-content li p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* Links */
+.blog-content a {
+  color: var(--color-fd-primary);
+  text-decoration: underline;
+  text-underline-offset: 3.5px;
+  text-decoration-color: var(--color-fd-primary);
+  text-decoration-thickness: 1.5px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.blog-content a:hover {
+  opacity: 0.8;
+}
+
+/* Blockquotes */
+.blog-content blockquote {
+  border-left: 3px solid var(--color-fd-primary);
+  padding-left: 1.15em;
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  font-style: italic;
+  color: var(--color-fd-muted-foreground);
+}
+
+.blog-content blockquote p {
+  margin-top: 0.6em;
+  margin-bottom: 0.6em;
+}
+
+/* Code blocks */
+.blog-content pre {
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+}
+
+/* Inline code */
+.blog-content :not(pre) > code {
+  font-size: 0.875em;
+  font-weight: 400;
+  padding: 3px 5px;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 5px;
+  background: var(--color-fd-muted);
+  color: var(--color-fd-foreground);
+}
+
+/* Horizontal rules */
+.blog-content hr {
+  border: none;
+  border-top: 1px solid var(--color-fd-border);
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+}
+
+/* Strong */
+.blog-content strong {
+  font-weight: 700;
+  color: var(--color-fd-foreground);
+}
+
+/* Images */
+.blog-content img {
+  margin-top: 1.75em;
+  margin-bottom: 1.75em;
+  border-radius: 0.75rem;
+}
+
+/* Tables */
+.blog-content table {
+  width: 100%;
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.blog-content thead th {
+  font-weight: 600;
+  padding: 0.65em 1em;
+  border-bottom: 2px solid var(--color-fd-border);
+  text-align: left;
+}
+
+.blog-content tbody td {
+  padding: 0.65em 1em;
+  border-bottom: 1px solid var(--color-fd-border);
+}

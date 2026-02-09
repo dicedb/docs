@@ -20,8 +20,7 @@ export default function HomePage() {
               DiceDB
             </h1>
             <p className="text-2xl md:text-3xl font-light text-muted-foreground max-w-3xl mx-auto tracking-wide">
-              Open-source, lightning-fast in-memory key/value datastore
-              extending Valkey with multi-tiered storage.
+              Open-source, low-latency key/value engine built on Valkey with hierarchical storage tiers.
             </p>
           </div>
 

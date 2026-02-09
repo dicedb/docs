@@ -48,7 +48,7 @@ export default async function BlogPostPage(props: PageProps) {
         )}
 
         {/* Content */}
-        <div className="prose prose-neutral dark:prose-invert max-w-none">
+        <div className="blog-content">
           <Mdx components={defaultMdxComponents} />
         </div>
       </div>

@@ -14,7 +14,7 @@ export function baseOptions() {
             height={28}
             className="rounded-md"
           />
-          <span className="font-bold text-foreground">DiceDB</span>
+          <span className="font-bold text-foreground text-lg">DiceDB</span>
         </div>
       ),
     },
@@ -29,11 +29,11 @@ export function baseOptions() {
         url: '/commands',
         icon: <Terminal className="size-4" />,
       },
-      // {
-      //   text: 'Blog',
-      //   url: '/blog',
-      //   icon: <Newspaper className="size-4" />,
-      // },
+      {
+        text: 'Blog',
+        url: '/blog',
+        icon: <Newspaper className="size-4" />,
+      },
       {
         text: 'Versions',
         url: '/versions',

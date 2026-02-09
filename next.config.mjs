@@ -5,7 +5,9 @@ const withMDX = createMDX();
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  output: 'export',
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -15,10 +17,6 @@ const config = {
   },
   async rewrites() {
     return [
-      {
-        source: '/docs/:path*.mdx',
-        destination: '/llms.mdx/docs/:path*',
-      },
     ];
   },
 };
