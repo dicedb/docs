@@ -61,8 +61,9 @@ Docker image of DiceDB which comes with everything pre-configured.
 
 ```bash
 docker run \
-  --name dicedb-1 -p 6379:6379 -v $(pwd)/data:/data/ \
-  dicedb:latest
+    --name dicedb-001 \
+    -p 6379:6379 -v $(pwd)/data:/data/ \
+    dicedb/dicedb
 ```
 
 This command starts a DiceDB container with the `spill` module
@@ -73,11 +74,14 @@ is configured with a maximum memory limit of 250MB.
 
 ```bash
 docker run \
-    --name dicedb-1 -p 6379:6379 -v $(pwd)/data:/data/ \
-    dicedb:latest \
+    --name dicedb-001 \
+    -p 6379:6379 -v $(pwd)/data:/data/ \
+    dicedb/dicedb \
     dicedb-server \
-    --protected-mode no \
-    --loadmodule /usr/local/lib/lib-spill.so path /data/spill/ max-memory 262144000 cleanup-interval 200
+      --port 6379 \
+      --maxmemory 500mb \
+      --protected-mode no \
+      --loadmodule /usr/local/lib/lib-spill.so path /data/spill/ max-memory 262144000 cleanup-interval 200
 ```
 
 ## Configuration
