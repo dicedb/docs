@@ -19,12 +19,12 @@ automatically restored to memory when accessed.
 
 ### Key Features
 
-- Transparent Persistence: Evicted keys are automatically persisted to RocksDB with zero application changes
-- Transparent Restoration: Keys are transparently restored on cache misses
-- TTL Preservation: Time-to-live values are fully preserved across evictions and restores
-- Minimal Overhead: Only 8 bytes of metadata overhead per key (on-disk) and 0 no overhead in-memory
-- Cleanup: Background thread periodically removes expired keys from disk
-- All Data Types: Supports strings, lists, sets, hashes, sorted sets, and more
+- Automatically persists evicted keys to RocksDB
+- Transparently restores keys on cache misses
+- Fully preserves TTLs across evictions and restores
+- One RocksDB instance per database — keys are isolated per DiceDB databases (db0, db1, …)
+- Starts fresh on every load — no stale data from previous runs
+- Automatically cleans up expired keys
 
 ## How It Works
 
@@ -53,6 +53,14 @@ The Spill module handles key expiration through multiple mechanisms:
 1. On-Access Cleanup: Expired keys are detected and removed during restore attempts
 2. Background Cleanup: A background thread periodically scans RocksDB to remove expired keys
 3. Manual Cleanup: Use the [`SPILL.CLEANUP`](/commands/spill-cleanup) command for immediate cleanup
+
+### Deletion Handling
+
+The Spill module ensures that deletions remain consistent across both memory and disk.
+
+1. When a key is deleted using the `DEL` command, it is removed from both memory and RocksDB if it exists in either location
+2. When `FLUSHDB` or `FLUSHALL` is executed, the corresponding RocksDB instances are also cleared
+3. When the DiceDB server starts, all RocksDB instances used by the Spill module are initialized fresh, ensuring that any previously spilled data is removed
 
 ## Getting Started
 
@@ -189,11 +197,35 @@ OK
 
 ## Monitoring and Statistics
 
-Spill statistics are integrated into the standard
-`INFO` command. Use `INFO spill` to view metrics:
+Spill statistics are automatically integrated into the standard `INFO` and `INFO ALL` commands.
+You can view spill metrics alongside other server statistics without needing a separate command.
 
-```bash
-127.0.0.1:7379> INFO spill
+The spill metrics are split across two sections
+
+1. stats - surfacing all the key stats related to Spill module
+2. config - surfacing the configuration of the module
+
+### stats section
+
+- `num_keys_stored` - Number of keys currently in RocksDB (approximated)
+- `total_keys_written` - Total write operations to RocksDB since server restart (increments on every write, including overwrites)
+- `total_keys_restored` - Total keys restored from RocksDB since server restart
+- `total_keys_cleaned` - Total keys removed due to expiration since server restart (includes keys expired during restore attempts and cleanup operations)
+- `last_num_keys_cleaned` - Number of keys cleaned up in the most recent cleanup job (manual or automatic)
+- `last_cleanup_at` - Unix timestamp in seconds when the last cleanup was run (0 if never run)
+- `total_bytes_written` - Total bytes written to RocksDB since server restart (includes metadata overhead)
+- `total_bytes_read` - Total bytes read from RocksDB since server restart (includes metadata overhead)
+
+### config section
+
+- `path` - Base directory for RocksDB storage (subdirectories `db0`, `db1`, … are created per database)
+- `max_memory_bytes` - Total memory budget across all RocksDB instances in bytes
+- `cleanup_interval_seconds` - Interval between automatic cleanup runs in seconds
+
+Example:
+
+```
+> INFO spill
 # stats
 spill_num_keys_stored:1523
 spill_total_keys_written:2347
@@ -209,22 +241,6 @@ spill_path:/var/lib/dicedb/spill
 spill_max_memory_bytes:268435456
 spill_cleanup_interval_seconds:300
 ```
-
-### Observability
-
-Module-level observability can be accessed via the `INFO SPILL`
-command. The following stats are captured and exported.
-
-| Metric | Description |
-|--------|-------------|
-| `num_keys_stored` | Current number of keys in RocksDB (approximate) |
-| `total_keys_written` | Total write operations to RocksDB since restart (includes overwrites) |
-| `total_keys_restored` | Total keys restored from RocksDB since restart |
-| `total_keys_cleaned` | Total keys removed due to expiration (includes restore-time and cleanup operations) |
-| `last_num_keys_cleaned` | Keys cleaned in the most recent cleanup job |
-| `last_cleanup_at` | Unix timestamp of last cleanup (0 if never run) |
-| `total_bytes_written` | Total bytes written to RocksDB (includes metadata) |
-| `total_bytes_read` | Total bytes read from RocksDB (includes metadata) |
 
 ## Best Practices
 
