@@ -1,6 +1,6 @@
 ---
 title: What is DiceDB?
-description: DiceDB is a fast, high-performance data structure server with tiered storage.
+description: DiceDB is a fast, high-performance data structure server with query subscriptions and tiered storage.
 icon: Home
 ---
 
@@ -34,6 +34,16 @@ DiceDB's offers [dicedb-spill](https://github.com/dicedb/dicedb-spill), which pr
 
 This architecture allows you to work with datasets larger than
 available RAM while maintaining in-memory performance for hot data.
+
+### Query Subscriptions
+
+DiceDB supports [Query Subscriptions](/docs/features/query-subscriptions) via `*.OBSERVE` commands, which provide:
+
+- Real-time push updates when query results change
+- Subscribe once and receive updates without polling
+- Reactive data access patterns for live applications
+
+This eliminates the need for repeated polling allowing clients subscribe to a query and receive updated result set the moment the underlying data changes.
 
 ## Compatibility
 

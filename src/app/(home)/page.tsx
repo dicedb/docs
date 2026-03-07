@@ -20,7 +20,7 @@ export default function HomePage() {
               DiceDB
             </h1>
             <p className="text-2xl md:text-3xl font-light text-muted-foreground max-w-3xl mx-auto tracking-wide">
-              Open-source, low-latency key/value engine built on Valkey with hierarchical storage tiers.
+              Open-source, low-latency key/value engine built on Valkey with query subscriptions and hierarchical storage tiers.
             </p>
           </div>
 
@@ -42,6 +42,14 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 pt-16">
+            <div
+              className="space-y-3 p-8 rounded-xl border border-border/50 hover:border-border transition-all bg-gradient-to-br from-transparent to-teal-500/10 hover:to-teal-500/20 group text-left"
+            >
+              <h3 className="text-xl font-bold group-hover:text-primary transition-colors">Query Subscriptions</h3>
+              <p className="text-muted-foreground leading-relaxed font-light">
+                Subscribe to query changes with <code className="font-mono text-sm">*.OBSERVE</code> commands and receive real-time push updates instead of polling.
+              </p>
+            </div>
             <div
               rel="noopener noreferrer"
               className="space-y-3 p-8 rounded-xl border border-border/50 hover:border-border transition-all bg-gradient-to-br from-transparent to-yellow-500/10 hover:to-yellow-500/20 group text-left"

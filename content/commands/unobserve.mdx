@@ -1,0 +1,72 @@
+---
+title: UNOBSERVE
+description: "Cancels one or more active observe subscriptions by fingerprint."
+synopsis: "Removes the specified observe subscriptions and returns the count of subscriptions removed."
+since: ""
+dicedb_since: "1.0.1"
+acl_categories:
+  - "@keyspace"
+  - "@fast"
+---
+
+## Syntax
+
+```
+UNOBSERVE fingerprint [fingerprint ...]
+```
+
+## Parameters
+
+| Parameter | Description | Type | Required |
+|-----------|-------------|------|----------|
+| `fingerprint` | Hex fingerprint returned when the subscription was created via `*.OBSERVE` | String | Yes |
+
+## Return Value
+
+Integer - the number of subscriptions that were actually removed. Invalid or non-existent fingerprints are ignored.
+
+## Behaviour
+
+`UNOBSERVE` removes the active observe subscriptions identified by the given fingerprints on
+the current connection. Each fingerprint is the CRC64 hex hash that was returned in the
+initial (and subsequent) observe messages when the subscription was created.
+
+- Fingerprints that do not correspond to an active subscription on the current connection are silently ignored.
+- After all subscriptions on a RESP2 connection are removed, the connection returns to normal command mode.
+
+## Examples
+
+### Cancel a single subscription
+
+```bash
+# First subscribe to a key
+127.0.0.1:7379> GET.OBSERVE counter
+1) ".observe"
+2) "fingerprint"
+3) "218585a66813d005"
+4) "result"
+5) (nil)
+
+# Cancel the subscription using the fingerprint
+127.0.0.1:7379> UNOBSERVE 218585a66813d005
+(integer) 1
+```
+
+### Cancel multiple subscriptions at once
+
+```bash
+127.0.0.1:7379> UNOBSERVE 3f9a1c82b47de051 7c2e5f1a9b043d86
+(integer) 2
+```
+
+### Fingerprint not found
+
+```bash
+127.0.0.1:7379> UNOBSERVE 0000000000000000
+(integer) 0
+```
+
+## Notes
+
+- The fingerprint for a given command + arguments is deterministic and stable. You can compute it ahead of time using a CRC64 hash of the concatenated command name and arguments.
+- Closing the connection automatically removes all active subscriptions for that connection.

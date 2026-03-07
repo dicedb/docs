@@ -8,3 +8,5 @@ description: Complete list of commands added to DiceDB that are not inherited fr
 | EVICT | [doc](/commands/evict) | Evicts the specified keys from in-memory tier and pushes them to disk if Spill is configured. | 1.0.0 |
 | SPILL.CLEANUP | [doc](/commands/spill-cleanup) | Performs a full scan of on-disk storage (RocksDB) to remove all expired keys. | 1.0.0 |
 | SPILL.RESTORE | [doc](/commands/spill-restore) | Restores a key from on-disk storage (RocksDB) back to memory. | 1.0.0 |
+| *.OBSERVE | [doc](/commands/observe) | Subscribes the client to real-time change notifications for the result of a readonly commands. | 1.0.1 |
+| UNOBSERVE | [doc](/commands/unobserve) | Cancels one or more active observe subscriptions by fingerprint. | 1.0.1 |

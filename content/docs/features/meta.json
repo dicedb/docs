@@ -2,6 +2,7 @@
   "title": "Features",
   "icon": "Sparkles",
   "pages": [
-    "tiering"
+    "tiering",
+    "query-subscriptions"
   ]
 }

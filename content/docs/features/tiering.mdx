@@ -10,9 +10,9 @@ completely transparent to applications.
 
 The Spill module integrates with DiceDB to provide tiered
 storage using RocksDB as the disk-backed persistence layer. When
-keys are evicted from memory—either manually using
+keys are evicted from memory either manually using
 the [`EVICT`](/commands/evict) command or automatically through
-eviction policies—they are transparently moved to RocksDB.
+eviction policies - they are transparently moved to RocksDB.
 
 These keys remain logically accessible and are
 automatically restored to memory when accessed.
@@ -22,8 +22,8 @@ automatically restored to memory when accessed.
 - Automatically persists evicted keys to RocksDB
 - Transparently restores keys on cache misses
 - Fully preserves TTLs across evictions and restores
-- One RocksDB instance per database — keys are isolated per DiceDB databases (db0, db1, …)
-- Starts fresh on every load — no stale data from previous runs
+- One RocksDB instance per database - keys are isolated per DiceDB databases (db0, db1, …)
+- Starts fresh on every load - no stale data from previous runs
 - Automatically cleans up expired keys
 
 ## How It Works
@@ -266,7 +266,7 @@ spill_cleanup_interval_seconds:300
 
 - First access after eviction incurs disk I/O latency (benchmarks will be published soon)
 - Expired keys are cleaned lazily to minimize overhead
-- `SPILL.CLEANUP` runs on the main thread—use automatic cleanup instead
+- `SPILL.CLEANUP` runs on the main thread - use automatic cleanup instead
 
 ## Limitations
 
