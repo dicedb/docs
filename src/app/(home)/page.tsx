@@ -47,7 +47,7 @@ export default function HomePage() {
             >
               <h3 className="text-xl font-bold group-hover:text-primary transition-colors">Query Subscriptions</h3>
               <p className="text-muted-foreground leading-relaxed font-light">
-                Subscribe to query changes with <code className="font-mono text-sm">*.OBSERVE</code> commands and receive real-time push updates instead of polling.
+                Subscribe to query changes with <code className="font-mono text-sm">OBSERVE</code> commands and receive real-time push updates instead of polling.
               </p>
             </div>
             <div

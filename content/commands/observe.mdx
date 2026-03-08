@@ -1,5 +1,5 @@
 ---
-title: "*.OBSERVE"
+title: "OBSERVE"
 description: "Subscribes the client to real-time change notifications for the result of a read command."
 synopsis: "Subscribes to a query and pushes the command result whenever the key changes."
 since: ""
@@ -9,30 +9,30 @@ acl_categories:
   - "@read"
 ---
 
-Every readonly command in DiceDB will have a `.OBSERVE` variant. Sending `<CMD>.OBSERVE`
-subscribes the current connection to the result of that command. DiceDB evaluates the command
-immediately and sends the current result, then re-evaluates and pushes a new result every time
-the observed key is modified.
+`OBSERVE <cmd> <key> [args...]` subscribes the current connection to the result of the given
+readonly command. DiceDB evaluates the command immediately and sends the current result, then
+re-evaluates and pushes a new result every time the observed key is modified.
 
-> Right now, DiceDB supports `GET.OBSERVE` and `ZRANGE.OBSERVE`.
+> Right now, DiceDB supports `OBSERVE GET` and `OBSERVE ZRANGE`.
 
 ## Syntax
 
 ```
-<CMD>.OBSERVE key [arg [arg ...]]
+OBSERVE <cmd> key [arg [arg ...]]
 ```
 
-The arguments are identical to the base command. For example:
+The arguments after the command name are identical to the base command. For example:
 
 ```
-GET.OBSERVE mykey
-ZRANGE.OBSERVE myzset 0 -1 WITHSCORES
+OBSERVE GET mykey
+OBSERVE ZRANGE myzset 0 -1 WITHSCORES
 ```
 
 ## Parameters
 
 | Parameter | Description | Type | Required |
 |-----------|-------------|------|----------|
+| `cmd` | The readonly command to observe (e.g., `GET`, `ZRANGE`) | String | Yes |
 | `key` | The key to observe | String | Yes |
 | `arg` | Additional arguments required by the base command | Any | Depends on command |
 
@@ -41,12 +41,12 @@ ZRANGE.OBSERVE myzset 0 -1 WITHSCORES
 Every message (initial result and subsequent change notifications) is a 5-element array:
 
 ```
-[".observe", "fingerprint", "<hex-fingerprint>", "result", <command-result>]
+["observe", "fingerprint", "<hex-fingerprint>", "result", <command-result>]
 ```
 
 | Element | Description |
 |---------|-------------|
-| `.observe` | Identifies the message as an observe notification |
+| `observe` | Identifies the message as an observe notification |
 | `fingerprint` | Label for the fingerprint field |
 | `<hex-fingerprint>` | CRC64 hex hash of the command name + arguments; uniquely identifies this subscription |
 | `result` | Label for the result field |
@@ -60,19 +60,19 @@ Every message (initial result and subsequent change notifications) is a 5-elemen
 4. The subscription remains active until `UNOBSERVE` is called or the connection is closed.
 5. Observing clients never time out.
 
-## Existing Commands with .OBSERVE Support
+## Supported Commands
 
 | Command |
 |---------|
-| `GET.OBSERVE` |
-| `ZRANGE.OBSERVE` |
+| `OBSERVE GET` |
+| `OBSERVE ZRANGE` |
 
 ## Examples
 
 ```bash
 # Terminal 1 - subscribe
-127.0.0.1:7379> GET.OBSERVE counter
-1) ".observe"
+127.0.0.1:7379> OBSERVE GET counter
+1) "observe"
 2) "fingerprint"
 3) "218585a66813d005"
 4) "result"
@@ -82,7 +82,7 @@ Every message (initial result and subsequent change notifications) is a 5-elemen
 127.0.0.1:7379> SET counter 42
 
 # Terminal 1 - receives push notification automatically
-1) ".observe"
+1) "observe"
 2) "fingerprint"
 3) "218585a66813d005"
 4) "result"
@@ -98,5 +98,5 @@ Every message (initial result and subsequent change notifications) is a 5-elemen
 
 ## Notes
 
-- Only readonly commands have `.OBSERVE` variants. Write commands cannot be observed.
+- Only readonly commands can be observed. Write commands cannot be passed to `OBSERVE`.
 - The fingerprint is deterministic: the same command with the same arguments always produces the same fingerprint, so clients can pre-compute fingerprints to match incoming notifications.

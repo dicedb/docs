@@ -1,17 +1,17 @@
 ---
 title: Query Subscriptions
-description: Subscribe to real-time query change notifications instead of polling using *.OBSERVE commands
+description: Subscribe to real-time query change notifications instead of polling using the OBSERVE command
 ---
 
 DiceDB's Observe feature lets clients subscribe to the result of a read command and receive
 push notifications (with result set) whenever the observed key changes, eliminating the need to poll for updates.
 
-Any readonly command can have a `.OBSERVE` variant (e.g., `GET.OBSERVE`, `ZRANGE.OBSERVE`). All observe commands support
-the exact same arguments as their base command. For example, `GET.OBSERVE` supports all arguments of `GET`.
+Use `OBSERVE <cmd> key [args...]` to subscribe (e.g., `OBSERVE GET mykey`, `OBSERVE ZRANGE myzset 0 -1`).
+The arguments after the command name are identical to the base command.
 
 ## How It Works
 
-1. The client sends a `<CMD>.OBSERVE` command (e.g., `GET.OBSERVE mykey`).
+1. The client sends an `OBSERVE` command (e.g., `OBSERVE GET mykey`).
 2. DiceDB evaluates the command immediately and sends back the current result.
 3. Whenever the observed key is modified by any write command, DiceDB re-evaluates the command and pushes a new result to the client.
 4. If `observe-debounce-period-ms` is configured, rapid successive writes are coalesced and a single notification is emitted after the debounce window expires.
@@ -23,12 +23,12 @@ Every message pushed to an observing client, both the initial result and subsequ
 notifications, uses a 5-element array:
 
 ```
-[".observe", "fingerprint", "<hex-fingerprint>", "result", <command-result>]
+["observe", "fingerprint", "<hex-fingerprint>", "result", <command-result>]
 ```
 
 | Field | Description |
 |-------|-------------|
-| `.observe` | Constant string that identifies the message type |
+| `observe` | Constant string that identifies the message type |
 | `fingerprint` | Constant label for the next field |
 | `<hex-fingerprint>` | CRC64 hex hash of the command name + arguments; used to match notifications to subscriptions |
 | `result` | Constant label for the next field |
@@ -38,8 +38,8 @@ notifications, uses a 5-element array:
 
 ```bash
 # Terminal 1 - subscribe
-127.0.0.1:7379> GET.OBSERVE counter
-1) ".observe"
+127.0.0.1:7379> OBSERVE GET counter
+1) "observe"
 2) "fingerprint"
 3) "218585a66813d005"
 4) "result"
@@ -49,7 +49,7 @@ notifications, uses a 5-element array:
 127.0.0.1:7379> SET counter 42
 
 # Terminal 1 - receives push notification automatically
-1) ".observe"
+1) "observe"
 2) "fingerprint"
 3) "218585a66813d005"
 4) "result"
@@ -68,15 +68,15 @@ observe-debounce-period-ms 50
 
 ## Available Commands
 
-See [`*.OBSERVE`](/commands/observe) for the full command reference, including syntax, return
-values, and the list of commands that currently have an `.OBSERVE` equivalent.
+See [`OBSERVE`](/commands/observe) for the full command reference, including syntax, return
+values, and the list of commands that currently support `OBSERVE`.
 
 Currently supported:
 
 | Command |
 |---------|
-| `GET.OBSERVE` |
-| `ZRANGE.OBSERVE` |
+| `OBSERVE GET` |
+| `OBSERVE ZRANGE` |
 
 ## Cancelling Subscriptions
 
