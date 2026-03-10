@@ -13,7 +13,7 @@ acl_categories:
 readonly command. DiceDB evaluates the command immediately and sends the current result, then
 re-evaluates and pushes a new result every time the observed key is modified.
 
-> Right now, DiceDB supports `OBSERVE GET` and `OBSERVE ZRANGE`.
+> DiceDB supports observing a wide range of read commands. See [Supported Commands](#supported-commands) below for the full list.
 
 ## Syntax
 
@@ -64,8 +64,58 @@ Every message (initial result and subsequent change notifications) is a 5-elemen
 
 | Command |
 |---------|
-| `OBSERVE GET` |
-| `OBSERVE ZRANGE` |
+| `GET` |
+| `STRLEN` |
+| `GETRANGE` |
+| `HGET` |
+| `HMGET` |
+| `HLEN` |
+| `HGETALL` |
+| `HKEYS` |
+| `HVALS` |
+| `HEXISTS` |
+| `HSTRLEN` |
+| `LLEN` |
+| `LRANGE` |
+| `LINDEX` |
+| `LPOS` |
+| `SCARD` |
+| `SISMEMBER` |
+| `SMISMEMBER` |
+| `SMEMBERS` |
+| `ZRANGE` |
+| `ZSCORE` |
+| `ZCARD` |
+| `ZRANK` |
+| `ZREVRANK` |
+| `ZCOUNT` |
+| `ZLEXCOUNT` |
+| `ZRANGEBYSCORE` |
+| `ZRANGEBYLEX` |
+| `ZREVRANGE` |
+| `ZREVRANGEBYSCORE` |
+| `ZREVRANGEBYLEX` |
+| `ZMSCORE` |
+| `GETBIT` |
+| `BITCOUNT` |
+| `BITPOS` |
+| `BITFIELD_RO` |
+| `PFCOUNT` |
+| `XLEN` |
+| `XRANGE` |
+| `XREVRANGE` |
+| `XPENDING` |
+| `GEOPOS` |
+| `GEODIST` |
+| `GEOSEARCH` |
+| `GEOHASH` |
+| `SORT_RO` |
+| `TTL` |
+| `PTTL` |
+| `EXPIRETIME` |
+| `PEXPIRETIME` |
+| `EXISTS` |
+| `TYPE` |
 
 ## Examples
 
